@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "framer-motion": "^11.3.30",
+    "hugeicons-react": "^0.3.0",
+    "lenis": "^1.1.13",
     "next": "14.2.7",
     "react": "^18",
     "react-dom": "^18"
