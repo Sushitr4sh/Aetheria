@@ -1,17 +1,33 @@
 "use client";
 
-import React from "react";
+import React, { ReactNode } from "react";
 
-import { motion } from "framer-motion";
-import { cubicBezier } from "framer-motion";
+// Next
 
-const ZoopText = ({ children, delay }: { children: string; delay: number }) => {
+// Component
+
+// CSS
+
+// Image
+
+// Logo
+
+// External
+import { motion, cubicBezier } from "framer-motion";
+
+const ZoopText = ({
+  children,
+  delay,
+}: {
+  children: string | ReactNode;
+  delay: number;
+}) => {
   return (
     <motion.div
       initial="initial"
       animate="animate"
       transition={{ type: "tween", ease: "easeOut", duration: 2 }}
-      className="relative block overflow-hidden whitespace-nowrap text-6xl font-medium"
+      className="relative block overflow-hidden whitespace-nowrap text-6xl md:text-7xl font-medium"
       style={{ lineHeight: 1.125 }}
     >
       <motion.p

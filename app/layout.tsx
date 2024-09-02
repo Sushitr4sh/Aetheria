@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import { Schibsted_Grotesk } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const bricolage_grotesque = Schibsted_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-bricolage_grotesque",
-});
+const myFont = localFont({ src: "./Sequel Sans Roman Disp.ttf" });
 
 export const metadata: Metadata = {
   title: "Aetheria",
@@ -19,9 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${bricolage_grotesque.variable} font-sans `}>
-        {children}
-      </body>
+      <body className={`${myFont.className} relative`}>{children}</body>
     </html>
   );
 }

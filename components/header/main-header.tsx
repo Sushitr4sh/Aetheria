@@ -16,7 +16,7 @@ const MainHeader = () => {
           Get in touch
         </button>
         <button className="bg-[#4734f7] p-2 rounded-full">
-          <Menu01Icon size={24} color="#ffffff" />
+          <Menu01Icon size={20} color="#ffffff" />
         </button>
       </nav>
     </header>

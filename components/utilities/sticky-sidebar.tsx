@@ -1,5 +1,16 @@
 import React from "react";
 
+// Next
+
+// Component
+
+// CSS
+
+// Image
+
+// Logo
+
+// External
 import { GoogleGeminiIcon } from "hugeicons-react";
 
 const StickySidebar = () => {

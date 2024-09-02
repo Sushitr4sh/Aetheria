@@ -1,7 +1,17 @@
 import React from "react";
 
+// Next
 import Link from "next/link";
 
+// Component
+
+// CSS
+
+// Image
+
+// Logo
+
+// External
 import { GoogleGeminiIcon } from "hugeicons-react";
 
 const ChatbotMenu = () => {
