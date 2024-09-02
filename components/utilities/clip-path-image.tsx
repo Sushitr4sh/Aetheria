@@ -2,24 +2,33 @@
 
 import React from "react";
 
-import { motion, cubicBezier } from "framer-motion";
+import Image from "next/image";
+
+import { motion } from "framer-motion";
+
+import Hero01Img from "@/public/images/hero01.jpg";
 
 const ClipPathImage = ({ backgroundImage }: { backgroundImage: string }) => {
   return (
-    <motion.div
-      initial={{ clipPath: "inset(0% 100% 0% 0%)" }}
-      animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
-      className="bg-cover my-2 aspect-[21/9] w-[70%]"
-      transition={{
-        ease: cubicBezier(0.98, 0.51, 0.38, 1.04),
-        duration: 0.5,
-        /* ease: "circInOut", */
-        delay: 1.75,
-      }}
-      style={{
-        backgroundImage: `url(${backgroundImage})`,
-      }}
-    ></motion.div>
+    <div className="relative w-[70%] overflow-hidden my-2">
+      <motion.div
+        className="bg-white w-full h-full z-10 absolute border-black"
+        initial={{ x: "0%" }}
+        animate={{ x: "100%" }}
+        style={{ transition: "all ease-out 0.225s" }}
+        transition={{ delay: 1.75 }}
+        /* transition={{
+          ease: cubicBezier(0.98, 0.51, 0.38, 1.04),
+          duration: 0.5,
+          delay: 1.75,
+        }} */
+      />
+      <Image
+        src={Hero01Img}
+        alt="two people smiling"
+        className="object-cover object-right-top aspect-[21/9]"
+      />
+    </div>
   );
 };
 
