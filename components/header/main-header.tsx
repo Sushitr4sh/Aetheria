@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 // Next
@@ -14,10 +16,16 @@ import LogoReveal from "../utilities/logo-reveal";
 import { Menu01Icon } from "hugeicons-react";
 
 // External
+import { easeInOut, motion } from "framer-motion";
 
 const MainHeader = () => {
   return (
-    <header className="py-4 px-6 flex justify-between items-center">
+    <motion.header
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, delay: 0.25, ease: easeInOut }}
+      className="py-4 px-6 flex justify-between items-center"
+    >
       <LogoReveal href="/" delay={1.5}>
         aetheria
       </LogoReveal>
@@ -30,7 +38,7 @@ const MainHeader = () => {
           <Menu01Icon size={20} color="#ffffff" />
         </button>
       </nav>
-    </header>
+    </motion.header>
   );
 };
 
