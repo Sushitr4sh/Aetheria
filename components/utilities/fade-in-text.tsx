@@ -13,18 +13,24 @@ import React, { ReactNode } from "react";
 // Logo
 
 // External
-import { motion, cubicBezier } from "framer-motion";
+import { motion, cubicBezier, easeInOut } from "framer-motion";
 
-const FadeInText = ({ children }: { children: string }) => {
+const FadeInText = ({
+  children,
+  delay,
+}: {
+  children: string;
+  delay: number;
+}) => {
   return (
     <motion.article
-      className="absolute px-6 pb-4 bottom-0 text-lg w-full font-medium"
+      className="absolute px-6 pb-6 bottom-0 text-lg w-full font-medium leading-6"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{
-        duration: 0.5,
-        ease: cubicBezier(0.98, 0.51, 0.38, 1.04),
-        delay: 2.25,
+        duration: 0.75,
+        ease: easeInOut,
+        delay,
       }}
     >
       {children}

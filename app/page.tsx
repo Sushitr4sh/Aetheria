@@ -28,26 +28,26 @@ const Home = () => {
         <MainHeader />
         <main className="px-6 mt-8">
           <div className="md:hidden">
-            <ZoopText delay={0}>Start your</ZoopText>
-            <ZoopText delay={0.25}>journey &</ZoopText>
-            <ZoopText delay={0.5}>discover</ZoopText>
+            <ZoopText delay={0.25}>Start your</ZoopText>
+            <ZoopText delay={0.5}>journey &</ZoopText>
+            <ZoopText delay={0.75}>discover</ZoopText>
             <ClipPathImage backgroundImage={Hero01Img} delay={1.75} />
             <span className="text-[#b3b3b3]">
-              <ZoopText delay={0.85}>peace</ZoopText>
+              <ZoopText delay={1.1}>peace</ZoopText>
             </span>
           </div>
           <div className="hidden">
-            <ZoopText delay={0}>Start your journey &</ZoopText>
+            <ZoopText delay={0.25}>Start your journey &</ZoopText>
             <div className="flex gap-x-4">
-              <ZoopText delay={0.25}>discover</ZoopText>
+              <ZoopText delay={0.5}>discover</ZoopText>
               <ClipPathImage backgroundImage={Hero01Img} delay={1.5} />
               <span className="text-gray-400">
-                <ZoopText delay={0.25}>peace</ZoopText>
+                <ZoopText delay={0.5}>peace</ZoopText>
               </span>
             </div>
           </div>
         </main>
-        <FadeInText>
+        <FadeInText delay={2.25}>
           At widelab we plan, design and market delightful digital products.
         </FadeInText>
         <StickySidebar />

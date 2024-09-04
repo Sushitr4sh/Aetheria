@@ -1,15 +1,26 @@
 import React from "react";
 
+// Next
 import Link from "next/link";
 
+// Component
+import LogoReveal from "../utilities/logo-reveal";
+
+// CSS
+
+// Image
+
+// Logo
 import { Menu01Icon } from "hugeicons-react";
+
+// External
 
 const MainHeader = () => {
   return (
     <header className="py-4 px-6 flex justify-between items-center">
-      <Link href="/" className="font-bold text-3xl">
+      <LogoReveal href="/" delay={1.5}>
         aetheria
-      </Link>
+      </LogoReveal>
       {/* Make this another component later! */}
       <nav className="flex items-center gap-x-6">
         <button className="font-medium text-lg border-b border-black pb-0 leading-5">
