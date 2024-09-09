@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google-cloud/vertexai": "^1.7.0",
     "framer-motion": "^11.3.30",
     "hugeicons-react": "^0.3.0",
     "lenis": "^1.1.13",
