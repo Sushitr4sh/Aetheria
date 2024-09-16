@@ -67,18 +67,18 @@ const Chat = () => {
       </main>
       <form
         onSubmit={handleSubmit}
-        className="fixed bottom-0 w-full px-4 pb-2 bg-white"
+        className="fixed bottom-0 w-full px-4 pb-2 pt-1 bg-white"
       >
         <input
           type="text"
-          className="w-full py-5 px-6 text-xl rounded-full bg-[#f0f4f9] mb-2 focus:outline-none border border-gray-200 shadow-md"
+          className="w-full py-4 px-6 text-xl rounded-full bg-[#f0f4f9] mb-2 focus:outline-none border border-gray-200 shadow-md"
           placeholder="Enter a prompt here"
           name="prompt"
           id="prompt"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
         />
-        <aside className="text-center px-4 text-sm text-gray-400 ">
+        <aside className="text-center px-4 text-xs text-gray-400 ">
           Luna may display inaccurate info, including about people, so
           double-check its responses.
         </aside>
