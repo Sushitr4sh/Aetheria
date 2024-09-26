@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { FC } from "react";
 
 // Next
 import Image, { StaticImageData } from "next/image";
@@ -16,13 +16,12 @@ import Image, { StaticImageData } from "next/image";
 // External
 import { motion } from "framer-motion";
 
-const ClipPathImage = ({
-  backgroundImage,
-  delay,
-}: {
+interface ClipPathImageProps {
   backgroundImage: StaticImageData;
   delay: number;
-}) => {
+}
+
+const ClipPathImage: FC<ClipPathImageProps> = ({ backgroundImage, delay }) => {
   return (
     <div className="relative w-[70%] md:w-[25%] overflow-hidden my-2">
       <motion.div
@@ -31,11 +30,6 @@ const ClipPathImage = ({
         animate={{ x: "100%" }}
         style={{ transition: "all ease-out 0.225s" }}
         transition={{ delay }}
-        /* transition={{
-          ease: cubicBezier(0.98, 0.51, 0.38, 1.04),
-          duration: 0.5,
-          delay: 1.75,
-        }} */
       />
       <Image
         src={backgroundImage}
