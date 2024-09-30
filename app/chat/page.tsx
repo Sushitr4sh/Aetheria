@@ -14,6 +14,7 @@ import MainHeader from "@/components/header/main-header";
 import { GoogleGeminiIcon } from "hugeicons-react";
 
 // External
+import { motion, easeIn } from "framer-motion";
 
 interface ChatMessage {
   prompt: string;
@@ -65,7 +66,10 @@ const Chat = () => {
             </div>
           ))}
       </main>
-      <form
+      <motion.form
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 1, ease: easeIn }}
         onSubmit={handleSubmit}
         className="fixed bottom-0 w-full px-4 pb-2 pt-1 bg-white"
       >
@@ -82,7 +86,7 @@ const Chat = () => {
           Luna may display inaccurate info, including about people, so
           double-check its responses.
         </aside>
-      </form>
+      </motion.form>
     </>
   );
 };
