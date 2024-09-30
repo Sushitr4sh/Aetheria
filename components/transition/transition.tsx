@@ -1,5 +1,5 @@
+"use client";
 import React from "react";
-import BoxFade from "./box-fade";
 
 // Next
 
@@ -12,6 +12,17 @@ import BoxFade from "./box-fade";
 // Logo
 
 // External
+import { motion, easeIn } from "framer-motion";
+const BoxFade = () => {
+  return (
+    <motion.div
+      initial={{ width: "100%" }}
+      animate={{ width: "0%" }}
+      transition={{ duration: 0.5, ease: easeIn }}
+      className="h-full bg-[#eeecee]"
+    />
+  );
+};
 
 const Transition = () => {
   return (

@@ -23,7 +23,7 @@ import FadeInText from "@/components/utilities/fade-in-text";
 const Home = () => {
   return (
     <>
-      <Transition />
+      {/* <Transition /> */}
       <section className="flex flex-col w-full h-[100dvh] relative">
         <MainHeader />
         <main className="px-6 mt-8">
@@ -50,10 +50,10 @@ const Home = () => {
         <FadeInText delay={2.25}>
           At widelab we plan, design and market delightful digital products.
         </FadeInText>
-        <StickySidebar />
+        <StickySidebar href="/chat">Luna</StickySidebar>
         <ChatbotMenu />
       </section>
-      <section className="h-[100vh] w-full"></section>
+      {/* <section className="h-[100vh] w-full"></section> */}
     </>
   );
 };
