@@ -26,6 +26,7 @@ body {
     rgb(var(--background-start-rgb));
 } */
 
+/* Transition */
 body {
   transition-property: opacity, background, transform, filter;
   transition-timing-function: ease-in-out;

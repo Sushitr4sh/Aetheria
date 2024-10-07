@@ -1,5 +1,6 @@
 "use client";
 import React, { FormEvent, useState } from "react";
+import { useFormStatus } from "react-dom";
 
 // Next
 
@@ -21,6 +22,49 @@ interface ChatMessage {
   response: string;
 }
 
+function formatTextToJSX(text: string): JSX.Element {
+  // Split text into lines
+  const lines = text.split("\n");
+
+  return (
+    <>
+      {lines.map((line, index) => {
+        // Check if the line is a heading (e.g., ## or ###)
+        if (line.startsWith("##")) {
+          return (
+            <>
+              <h2 key={index}>{line.replace(/^##\s*/, "")}</h2>
+            </>
+          );
+        } else if (line.startsWith("* ")) {
+          // Handle bullet points
+          return (
+            <ul key={index} className="list-disc list-inside">
+              <li>{line.replace(/^\*\s*/, "")}</li>
+            </ul>
+          );
+        } else if (line.startsWith("**")) {
+          // Bold text within the line
+          const boldText = line.match(/\*\*(.*?)\*\*/);
+          if (boldText) {
+            return (
+              <p key={index}>
+                <strong>{boldText[1]}</strong>
+                {line.replace(`**${boldText[1]}**`, "")}
+              </p>
+            );
+          }
+        } else if (line.trim() !== "") {
+          // Regular paragraph text
+          return <p key={index}>{line}</p>;
+        }
+        // Return null for empty lines to avoid rendering them
+        return null;
+      })}
+    </>
+  );
+}
+
 const Chat = () => {
   const [prompt, setPrompt] = useState<string>("");
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
@@ -38,6 +82,7 @@ const Chat = () => {
       });
 
       const data = await response.json();
+
       setChatHistory((prevHistory) => [
         ...prevHistory,
         { prompt, response: data.response },
@@ -49,23 +94,26 @@ const Chat = () => {
       ]);
     }
   };
+
   return (
     <>
       <MainHeader />
+
       <main className="px-6 max-h-[80dvh]">
         {chatHistory.length > 0 &&
           chatHistory.map((chat, index) => (
-            <div key={index}>
+            <div key={index} className="mb-4">
               <div className="flex flex-col gap-y-2">
-                <p>You:</p> <p>{chat.prompt}</p>
+                <p className="font-bold">You:</p> <p>{chat.prompt}</p>
               </div>
               <div className="flex flex-col mt-6 gap-y-2">
                 <GoogleGeminiIcon size={32} color="#4d85d2" fill="#4d85d2" />
-                <p>{chat.response}</p>
+                <div>{chat.response}</div>
               </div>
             </div>
           ))}
       </main>
+
       <motion.form
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
