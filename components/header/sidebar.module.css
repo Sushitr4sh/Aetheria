@@ -1,5 +1,5 @@
 .menu {
-  height: 100vh;
+  height: 100dvh;
   width: 100vw;
   background-color: white;
   position: fixed;
@@ -11,7 +11,7 @@
 .menu .body {
   box-sizing: border-box;
   height: 100%;
-  padding: 20px;
+  padding: 1.25rem; /* 20px converted to rem */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -20,17 +20,17 @@
 .menu .body .nav {
   display: flex;
   flex-direction: column;
-  font-size: 56px;
-  gap: 12px;
-  margin-top: 80px;
+  font-size: 3.5rem; /* 56px converted to rem */
+  gap: 0.75rem; /* 12px converted to rem */
+  margin-top: 5rem; /* 80px converted to rem */
 }
 
 .menu .body .nav .header {
   color: rgb(153, 153, 153);
   border-bottom: 1px solid rgb(153, 153, 153);
   text-transform: uppercase;
-  font-size: 11px;
-  padding-bottom: 30px;
+  font-size: 0.6875rem; /* 11px converted to rem */
+  padding-bottom: 1.875rem; /* 30px converted to rem */
 }
 
 .menu .body .nav a {
@@ -42,6 +42,6 @@
 .menu .footer {
   display: flex;
   width: 100%;
-  font-size: 14px;
-  gap: 20px;
+  font-size: 0.875rem; /* 14px converted to rem */
+  gap: 1.25rem; /* 20px converted to rem */
 }

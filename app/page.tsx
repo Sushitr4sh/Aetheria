@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // Next
 
@@ -20,17 +20,31 @@ import ClipPathImage from "@/components/utilities/clip-path-image";
 import FadeInText from "@/components/utilities/fade-in-text";
 
 // External
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Sidebar from "@/components/header/sidebar";
+import Parallax from "@/components/content/parallax";
+import Lenis from "lenis";
 
 const Home = () => {
+  useEffect(() => {
+    const lenis = new Lenis();
+    function raf(time: any) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+  }, []);
+
   const [isMenuActive, setIsMenuActive] = useState(false);
+
   return (
-    <>
-      {/* <Transition /> */}
-      <section className="flex flex-col w-full h-[100dvh] relative">
-        <MainHeader isActive={isMenuActive} onMenuClick={setIsMenuActive} />
-        <main className="px-6 mt-8">
+    <div className="absolute w-full h-[100dvh]">
+      <MainHeader isActive={isMenuActive} onMenuClick={setIsMenuActive} />
+      <AnimatePresence mode="wait">
+        {isMenuActive && <Sidebar />}
+      </AnimatePresence>
+      <section className="flex flex-col w-full h-[100dvh] fixed top-0 left-0 -z-50">
+        <main className="px-6 mt-28">
           <div className="md:hidden">
             <ZoopText delay={0.25}>Start your</ZoopText>
             <ZoopText delay={0.5}>journey &</ZoopText>
@@ -51,18 +65,17 @@ const Home = () => {
             </div>
           </div>
         </main>
-        <FadeInText delay={2.25}>
-          At Aetheria, we design and create digital tools that empower mental
-          well-being.
-        </FadeInText>
+        <div className="absolute px-6 pb-6 bottom-0">
+          <FadeInText delay={2.25}>
+            At Aetheria, we design and create digital tools that empower mental
+            well-being.
+          </FadeInText>
+        </div>
         <StickySidebar href="/chat">Luna</StickySidebar>
         <ChatbotMenu />
       </section>
-      <AnimatePresence mode="wait">
-        {isMenuActive && <Sidebar />}
-      </AnimatePresence>
-      {/* <section className="h-[100vh] w-full"></section> */}
-    </>
+      <Parallax />
+    </div>
   );
 };
 

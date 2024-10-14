@@ -28,7 +28,7 @@ const MainHeader: React.FC<MainHeaderProps> = ({ isActive, onMenuClick }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.175, delay: 0.25, ease: easeInOut }}
-      className="py-4 px-6 flex justify-between items-center z-50"
+      className="py-4 px-6 flex fixed bg-white top-0 w-full justify-between items-center z-50"
     >
       <LogoReveal href="/" delay={1.5}>
         aetheria

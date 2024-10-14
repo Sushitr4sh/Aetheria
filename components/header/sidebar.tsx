@@ -72,7 +72,7 @@ const Sidebar = () => {
           })}
         </div>
 
-        <div className="text-[11px] uppercase pt-[30px] border-t-[1px] border-[#999999] text-[#999999] mt-48">
+        <div className="text-[0.6875rem] pt-6 uppercase border-t-[1px] border-[#999999] text-[#999999]">
           <p>Legal Information</p>
         </div>
 

@@ -20,11 +20,11 @@ const FadeInText = ({
   delay,
 }: {
   children: string;
-  delay: number;
+  delay?: number;
 }) => {
   return (
     <motion.article
-      className="absolute px-6 pb-6 bottom-0 text-lg w-full font-medium leading-6"
+      className="text-lg w-full font-medium leading-6"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{
