@@ -15,7 +15,8 @@
     "lenis": "^1.1.13",
     "next": "14.2.7",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "sass": "^1.79.5"
   },
   "devDependencies": {
     "@types/node": "^20",

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 
 // Next
 import Link from "next/link";
@@ -17,15 +17,18 @@ import LogoReveal from "../utilities/logo-reveal";
 // External
 import { easeInOut, motion } from "framer-motion";
 
-const MainHeader = () => {
-  const [isActive, setIsActive] = useState(false);
+interface MainHeaderProps {
+  isActive: boolean;
+  onMenuClick: (active: boolean) => void;
+}
 
+const MainHeader: React.FC<MainHeaderProps> = ({ isActive, onMenuClick }) => {
   return (
     <motion.header
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.175, delay: 0.25, ease: easeInOut }}
-      className="py-4 px-6 flex justify-between items-center"
+      className="py-4 px-6 flex justify-between items-center z-50"
     >
       <LogoReveal href="/" delay={1.5}>
         aetheria
@@ -45,7 +48,7 @@ const MainHeader = () => {
           </Link>
         </motion.div>
         <motion.button
-          onClick={() => setIsActive(!isActive)}
+          onClick={() => onMenuClick(!isActive)}
           variants={backgroundVariant}
           initial={false}
           animate={isActive ? "open" : "close"}
@@ -116,7 +119,7 @@ const topBarVariant = {
     y: 4,
     backgroundColor: "#000000",
     transition: {
-      duration: 0.175,
+      duration: 0.25,
       easeInOut,
     },
   },
@@ -154,7 +157,7 @@ const bottomBarVariant = {
     y: -4,
     backgroundColor: "#000000",
     transition: {
-      duration: 0.175,
+      duration: 0.25,
       easeInOut,
     },
   },

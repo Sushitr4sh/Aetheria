@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 
 // Next
 
@@ -19,13 +20,16 @@ import ClipPathImage from "@/components/utilities/clip-path-image";
 import FadeInText from "@/components/utilities/fade-in-text";
 
 // External
+import { AnimatePresence } from "framer-motion";
+import Sidebar from "@/components/header/sidebar";
 
 const Home = () => {
+  const [isMenuActive, setIsMenuActive] = useState(false);
   return (
     <>
       {/* <Transition /> */}
       <section className="flex flex-col w-full h-[100dvh] relative">
-        <MainHeader />
+        <MainHeader isActive={isMenuActive} onMenuClick={setIsMenuActive} />
         <main className="px-6 mt-8">
           <div className="md:hidden">
             <ZoopText delay={0.25}>Start your</ZoopText>
@@ -48,11 +52,15 @@ const Home = () => {
           </div>
         </main>
         <FadeInText delay={2.25}>
-          At widelab we plan, design and market delightful digital products.
+          At Aetheria, we design and create digital tools that empower mental
+          well-being.
         </FadeInText>
         <StickySidebar href="/chat">Luna</StickySidebar>
         <ChatbotMenu />
       </section>
+      <AnimatePresence mode="wait">
+        {isMenuActive && <Sidebar />}
+      </AnimatePresence>
       {/* <section className="h-[100vh] w-full"></section> */}
     </>
   );
