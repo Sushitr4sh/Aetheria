@@ -95,9 +95,11 @@ const Chat = () => {
     }
   };
 
+  const [isMenuActive, setIsMenuActive] = useState(false);
+
   return (
     <>
-      <MainHeader />
+      <MainHeader isActive={isMenuActive} onMenuClick={setIsMenuActive} />
 
       <main className="px-6 max-h-[80dvh]">
         {chatHistory.length > 0 &&
