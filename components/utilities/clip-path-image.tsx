@@ -35,6 +35,7 @@ const ClipPathImage: FC<ClipPathImageProps> = ({ backgroundImage, delay }) => {
         src={backgroundImage}
         alt="two people smiling"
         className="object-cover object-right-top aspect-[21/9]"
+        priority
       />
     </div>
   );
