@@ -21,3 +21,8 @@ body {
     text-wrap: balance;
   }
 }
+
+::selection {
+  background-color: #4734f7; /* Tailwind's red-400 background */
+  color: #ffffff; /* White text */
+}

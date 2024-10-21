@@ -1,15 +1,32 @@
 import { Schema, model, models } from "mongoose";
 
-const userSchema = new Schema({
+/* const MoodEnum = {
+  HAPPINESS: "happiness",
+  SADNESS: "sadness",
+  DISGUST: "disgust",
+  FEAR: "fear",
+  SURPRISE: "surprise",
+  ANGER: "anger",
+}; */
+
+const journalSchema = new Schema({
   creator: {
     type: Schema.Types.ObjectId,
     ref: "User",
   },
-  text: {
+  entryText: {
     type: String,
-    required: [true, "Journal text is required!"],
+    required: [true, "Journal entry is required!"],
+  },
+  moodData: {
+    type: [Number],
+    required: true,
+  },
+  recommendation: {
+    type: [String],
+    required: true,
   },
 });
 
-const User = models.User || model("User", userSchema);
-export default User;
+const Journal = models.Journal || model("Journal", journalSchema);
+export default Journal;

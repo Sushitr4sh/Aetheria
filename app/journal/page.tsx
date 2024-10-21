@@ -3,8 +3,6 @@ import React, { useState, useEffect } from "react";
 
 // Next
 import { useSession } from "next-auth/react";
-import { signOut } from "next-auth/react";
-import Image from "next/image";
 
 // Component
 import MainHeader from "@/components/header/MainHeader";
@@ -17,16 +15,15 @@ import Sidebar from "@/components/header/Sidebar";
 // Logo
 
 // External
-import { AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Lenis from "lenis";
 import ZoopText from "@/components/utilities/ZoopText";
 import FadeInText from "@/components/utilities/FadeInText";
+import RadarChart from "@/components/utilities/RadarChart";
+import LoadingResponse from "@/components/loading/LoadingResponse";
 
 const Journal = () => {
   const { data: session } = useSession();
-  const handleSignOut = () => {
-    signOut({ callbackUrl: "/" });
-  };
 
   useEffect(() => {
     const lenis = new Lenis();
@@ -38,48 +35,97 @@ const Journal = () => {
   }, []);
 
   const [isMenuActive, setIsMenuActive] = useState(false);
+
+  const [journal, setJournal] = useState({ entryText: "" });
+  const [response, setResponse] = useState({
+    moodData: [],
+    recommendation: [],
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const saveJournal = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+
+    try {
+      if (!session || !session.user) {
+        throw new Error("Session not found");
+      }
+
+      const userId = (session.user as { id: string }).id;
+      const fetchResponse = await fetch("/api/journal/new", {
+        method: "POST",
+        body: JSON.stringify({
+          userId,
+          entryText: journal.entryText,
+        }),
+      });
+
+      if (!fetchResponse.ok) {
+        throw new Error(`HTTP error! status: ${fetchResponse.status}`);
+      }
+
+      // Parse the JSON response
+      const data = await fetchResponse.json();
+      // Set the response state
+      setResponse(data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
-    <section className="flex flex-col w-full h-[100dvh]">
+    <section className="flex flex-col w-full">
       <MainHeader isActive={isMenuActive} onMenuClick={setIsMenuActive} />
       <AnimatePresence mode="wait">
         {isMenuActive && <Sidebar />}
       </AnimatePresence>
       <article className="px-6 mt-28">
-        <div className="md:hidden">
+        <h2 className="md:hidden mb-6">
           <ZoopText delay={0.25}>My Journal</ZoopText>
-        </div>
-        <div className="w-full mt-24 relative">
-          <div className="border-t-[1px] border-[#999999]" />
-          <Image
-            src={session?.user.image || "/images/no-user.jpg"}
-            alt="Journal picture"
-            width={120}
-            height={120}
-            className="rounded-full absolute left-8 -top-[60px]"
-          />
-        </div>
-        <div className="flex gap-x-4 mt-20 items-center w-full">
-          <div className="mb-1">
-            <p className="text-3xl">{session?.user.name}</p>
-            <p className="text-gray-400">{session?.user.email}</p>
-          </div>
-          <div className="flex flex-grow justify-center">
-            <button
-              type="button"
-              onClick={handleSignOut}
-              className="text-lg px-6 py-1 text-[#f73434] border border-[#f73434] rounded-full"
-            >
-              Sign Out
-            </button>
-          </div>
-        </div>
-      </article>
-      <div className="absolute px-6 pb-6 bottom-0">
-        <FadeInText delay={2.25}>
+        </h2>
+        <FadeInText delay={1}>
           Your Aetheria profile is your personal space to track moods, journal,
           and explore AI tools for mental well-being.
         </FadeInText>
-      </div>
+
+        <div className="border-t-[1px] border-[#999999] mt-6" />
+
+        <form className="mt-6" onSubmit={saveJournal}>
+          {/* <input
+            type="date"
+            name="date"
+            id="date"
+            className="px-4 py-1 bg-[#f6f6f6] focs:bg-[#ebebeb] focus:outline-none transition duration-150 ease-in rounded-full"
+          /> */}
+          <label htmlFor="entryText" className="block text-lg font-semibold">
+            Today's note:
+          </label>
+          <textarea
+            name="entryText"
+            id="extryText"
+            className="w-full p-[1rem] h-[6.25rem] border border-gray-300 mt-2 focus:outline-none focus:border-[#4734f7] transition duration-150 ease-in"
+            placeholder="What's on your mind today? Anything you'd like to share? ..."
+            style={{ resize: "none" }}
+            value={journal.entryText}
+            onChange={(e) => setJournal({ entryText: e.target.value })}
+            required
+          ></textarea>
+          <div className="flex w-full justify-end mt-2">
+            <button className="bg-[#4734f7] px-3 py-1 rounded-lg text-white">
+              {submitting ? "Saving..." : "Save Journal"}
+            </button>
+          </div>
+        </form>
+      </article>
+      {submitting ? (
+        <LoadingResponse />
+      ) : (
+        response.moodData.length > 0 && (
+          <RadarChart moodData={response.moodData} />
+        )
+      )}
     </section>
   );
 };
