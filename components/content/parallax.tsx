@@ -16,7 +16,7 @@ import Hero03Img from "@/public/images/hero03.jpg";
 
 // External
 import { easeInOut, motion } from "framer-motion";
-import BarChart from "../utilities/bar-chart";
+import BarChart from "../utilities/BarChart";
 
 const Parallax = () => {
   return (

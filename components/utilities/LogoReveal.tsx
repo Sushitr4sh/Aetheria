@@ -1,6 +1,18 @@
 "use client";
 
 import { useState } from "react";
+
+// Next
+
+// Component
+
+// CSS
+
+// Image
+
+// Logo
+
+// External
 import { motion, easeInOut } from "framer-motion";
 
 const DURATION = 0.5;

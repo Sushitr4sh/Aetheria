@@ -1,15 +1,22 @@
 "use client";
 import React, { useState } from "react";
 
-import SidebarLink from "./sidebar-link";
-
-import { menuSlide } from "./anim";
-
+// Next
 import { usePathname } from "next/navigation";
 
-import { motion } from "framer-motion";
+// Component
+import SidebarLink from "./SidebarLink";
 
-import styles from "./sidebar.module.css";
+// CSS
+import styles from "./css/sidebar.module.css";
+
+// Image
+
+// Logo
+
+// External
+import { menuSlide } from "./anim";
+import { motion } from "framer-motion";
 
 const navItems = [
   {
@@ -19,15 +26,15 @@ const navItems = [
   },
 
   {
-    title: "Journal",
-
-    href: "/journal",
-  },
-
-  {
     title: "Profile",
 
     href: "/profile",
+  },
+
+  {
+    title: "Journal",
+
+    href: "/journal",
   },
 
   {
@@ -47,7 +54,7 @@ const Sidebar = () => {
       initial="initial"
       animate="enter"
       exit="exit"
-      className={styles.menu}
+      className={`${styles.menu} z-[90]`}
     >
       <div className={styles.body}>
         <div
@@ -59,6 +66,8 @@ const Sidebar = () => {
           <div className={styles.header}>
             <p>Navigation</p>
           </div>
+
+          <div className="mt-[1.25rem]" />
 
           {navItems.map((data, index) => {
             return (

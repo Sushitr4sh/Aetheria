@@ -4,9 +4,10 @@ import React, { useState, useEffect } from "react";
 // Next
 
 // Component
-import MainHeader from "@/components/header/main-header";
-import ZoopText from "@/components/utilities/zoop-text";
-import Transition from "@/components/transition/transition";
+import MainHeader from "@/components/header/MainHeader";
+import ZoopText from "@/components/utilities/ZoopText";
+import Sidebar from "@/components/header/Sidebar";
+import Parallax from "@/components/content/Parallax";
 
 // CSS
 
@@ -14,15 +15,13 @@ import Transition from "@/components/transition/transition";
 import Hero01Img from "@/public/images/hero01.jpg";
 
 // Logo
-import StickySidebar from "@/components/utilities/sticky-sidebar";
-import ChatbotMenu from "@/components/chatbot/chatbot-menu";
-import ClipPathImage from "@/components/utilities/clip-path-image";
-import FadeInText from "@/components/utilities/fade-in-text";
+import StickySidebar from "@/components/utilities/StickySidebar";
+import ChatbotMenu from "@/components/chatbot/ChatbotMenu";
+import ClipPathImage from "@/components/utilities/ClipPathImage";
+import FadeInText from "@/components/utilities/FadeInText";
 
 // External
-import { AnimatePresence, motion } from "framer-motion";
-import Sidebar from "@/components/header/sidebar";
-import Parallax from "@/components/content/parallax";
+import { AnimatePresence } from "framer-motion";
 import Lenis from "lenis";
 
 const Home = () => {
@@ -44,7 +43,7 @@ const Home = () => {
         {isMenuActive && <Sidebar />}
       </AnimatePresence>
       <section className="flex flex-col w-full h-[100dvh] fixed top-0 left-0 -z-50">
-        <main className="px-6 mt-28">
+        <article className="px-6 mt-28">
           <div className="md:hidden">
             <ZoopText delay={0.25}>Start your</ZoopText>
             <ZoopText delay={0.5}>journey &</ZoopText>
@@ -64,7 +63,7 @@ const Home = () => {
               </span>
             </div>
           </div>
-        </main>
+        </article>
         <div className="absolute px-6 pb-6 bottom-0">
           <FadeInText delay={2.25}>
             At Aetheria, we design and create digital tools that empower mental

@@ -1,5 +1,18 @@
-import styles from "./sidebar-link.module.css";
+import React from "react";
+
+// Next
 import Link from "next/link";
+
+// Component
+
+// CSS
+import styles from "./css/sidebar-link.module.css";
+
+// Image
+
+// Logo
+
+// External
 import { motion } from "framer-motion";
 import { slide, scale } from "./anim";
 

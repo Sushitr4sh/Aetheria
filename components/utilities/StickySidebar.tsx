@@ -50,7 +50,7 @@ const StickySidebar = ({ children, href, ...props }: StickySidebarProps) => {
     <Link
       href={href}
       {...props}
-      className="fixed flex items-center -right-8 top-[60%] transform -translate-y-[60%] my-auto -rotate-90 leading-3 px-3 bg-[#1f1f1f]/75 text-white py-1 border rounded-tl-xl rounded-tr-xl"
+      className="fixed flex items-center -right-8 top-[60%] transform -translate-y-[60%] my-auto -rotate-90 leading-3 px-3 bg-[#1f1f1f]/75 text-white py-1 border rounded-tl-xl rounded-tr-xl z-50"
       onClick={handleTransition}
     >
       {children} <GoogleGeminiIcon size={18} className="ml-2" />

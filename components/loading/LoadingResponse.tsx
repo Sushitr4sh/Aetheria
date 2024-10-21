@@ -1,6 +1,18 @@
 "use client";
 
 import React from "react";
+
+// Next
+
+// Component
+
+// CSS
+
+// Image
+
+// Logo
+
+// External
 import { useFormStatus } from "react-dom";
 
 const LoadingResponse = () => {

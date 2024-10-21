@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import Provider from "@/components/utilities/Provider";
 
-const myFont = localFont({ src: "./Sequel Sans Roman Disp.ttf" });
+const fontSans = localFont({ src: "./font/Sequel Sans Roman Disp.ttf" });
 
 export const metadata: Metadata = {
   title: "Aetheria",
@@ -16,7 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${myFont.className} relative`}>{children}</body>
+      <body className={`${fontSans.className} relative`}>
+        <Provider>
+          <main>{children}</main>
+        </Provider>
+      </body>
     </html>
   );
 }

@@ -1,5 +1,17 @@
 import React from "react";
 
+// Next
+
+// Component
+
+// CSS
+
+// Image
+
+// Logo
+
+// External
+
 const FlashMessage = () => {
   return (
     <aside>

@@ -1,3 +1,16 @@
+import React from "react";
+
+// Next
+
+// Component
+
+// CSS
+
+// Image
+
+// Logo
+
+// External
 import { easeInOut, motion } from "framer-motion";
 
 const BarChart = () => {
