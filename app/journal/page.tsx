@@ -21,6 +21,7 @@ import ZoopText from "@/components/utilities/ZoopText";
 import FadeInText from "@/components/utilities/FadeInText";
 import RadarChart from "@/components/utilities/RadarChart";
 import LoadingResponse from "@/components/loading/LoadingResponse";
+import Carousel from "@/components/utilities/Slider";
 
 const Journal = () => {
   const { data: session } = useSession();
@@ -76,7 +77,7 @@ const Journal = () => {
   };
 
   return (
-    <section className="flex flex-col w-full">
+    <section className="flex flex-col w-full pb-6">
       <MainHeader isActive={isMenuActive} onMenuClick={setIsMenuActive} />
       <AnimatePresence mode="wait">
         {isMenuActive && <Sidebar />}
@@ -120,10 +121,23 @@ const Journal = () => {
         </form>
       </article>
       {submitting ? (
-        <LoadingResponse />
+        <div className="mt-8">
+          <LoadingResponse />
+        </div>
       ) : (
         response.moodData.length > 0 && (
-          <RadarChart moodData={response.moodData} />
+          <div className="px-6 mt-8">
+            <p>
+              Interesting story! It seems you had quite an intense experience
+              today, filled with a mix of emotions. Here’s your mood data
+              reflecting that experience:
+            </p>
+            <RadarChart moodData={response.moodData} />
+            <p>To help improve your mood, consider these recommendations:</p>
+            <div className="mt-4">
+              <Carousel recommendation={response.recommendation} />
+            </div>
+          </div>
         )
       )}
     </section>
