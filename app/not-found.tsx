@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 
 // Next
+import Link from "next/link";
 
 // Component
 import MainHeader from "@/components/header/MainHeader";
@@ -38,12 +39,12 @@ const NotFound = () => {
   const [isMenuActive, setIsMenuActive] = useState(false);
 
   return (
-    <div className="absolute w-full h-[100dvh]">
+    <div className="w-full h-[100dvh]">
       <MainHeader isActive={isMenuActive} onMenuClick={setIsMenuActive} />
       <AnimatePresence mode="wait">
         {isMenuActive && <Sidebar />}
       </AnimatePresence>
-      <section className="flex flex-col w-full h-[100dvh] fixed top-0 left-0 -z-50">
+      <section className="flex flex-col w-full h-[100dvh] top-0 left-0 -z-50">
         <article className="px-6 mt-28">
           <div className="md:hidden">
             <ZoopText delay={0.25}>404 Error.</ZoopText>
@@ -69,9 +70,11 @@ const NotFound = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.55, ease: easeInOut, delay: 2 }}
-          className="absolute px-6 pb-6 bottom-0 w-full"
+          className="absolute px-6 pb-6 bottom-0 w-full z-50"
         >
-          <ArrowButton number="01">Back to home</ArrowButton>
+          <Link href="/">
+            <ArrowButton number="01">Back to home</ArrowButton>
+          </Link>
           <ArrowButton number="02">Contact us</ArrowButton>
           <div className="w-full border-b border-gray-300" />
         </motion.div>
