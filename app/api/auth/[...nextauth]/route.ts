@@ -1,6 +1,9 @@
 import NextAuth, { NextAuthOptions, Session, Profile } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
+import { connectToDB } from "@/lib/database";
+import User from "@/models/user";
+
 declare module "next-auth" {
   interface Session {
     user: {
@@ -17,9 +20,6 @@ declare module "next-auth/jwt" {
     id: string;
   }
 }
-
-import { connectToDB } from "@/lib/database";
-import User from "@/models/user";
 
 if (!process.env.GOOGLE_ID || !process.env.GOOGLE_CLIENT_SECRET) {
   throw new Error(

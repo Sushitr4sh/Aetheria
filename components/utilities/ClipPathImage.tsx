@@ -19,9 +19,14 @@ import { motion } from "framer-motion";
 interface ClipPathImageProps {
   backgroundImage: StaticImageData;
   delay: number;
+  gif?: boolean;
 }
 
-const ClipPathImage: FC<ClipPathImageProps> = ({ backgroundImage, delay }) => {
+const ClipPathImage: FC<ClipPathImageProps> = ({
+  backgroundImage,
+  gif,
+  delay,
+}) => {
   return (
     <div className="relative w-[70%] md:w-[25%] overflow-hidden my-2">
       <motion.div
@@ -34,7 +39,9 @@ const ClipPathImage: FC<ClipPathImageProps> = ({ backgroundImage, delay }) => {
       <Image
         src={backgroundImage}
         alt="two people smiling"
-        className="object-cover object-right-top aspect-[21/9]"
+        className={`object-cover ${
+          gif ? "object-center" : "object-right-top"
+        }  aspect-[21/9]`}
         priority={true}
       />
     </div>
