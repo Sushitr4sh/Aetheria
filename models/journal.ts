@@ -26,6 +26,10 @@ const journalSchema = new Schema({
     type: [String],
     required: true,
   },
+  shortSummary: {
+    type: String,
+    required: true,
+  },
 });
 
 const Journal = models.Journal || model("Journal", journalSchema);

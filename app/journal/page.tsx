@@ -41,6 +41,7 @@ const Journal = () => {
   const [response, setResponse] = useState({
     moodData: [],
     recommendation: [],
+    shortSummary: "",
   });
   const [submitting, setSubmitting] = useState(false);
   const saveJournal = async (e: React.FormEvent) => {
@@ -87,19 +88,13 @@ const Journal = () => {
           <ZoopText delay={0.25}>My Journal</ZoopText>
         </h2>
         <FadeInText delay={1}>
-          Your Aetheria profile is your personal space to track moods, journal,
-          and explore AI tools for mental well-being.
+          My Journal is your private space in Aetheria to record your thoughts,
+          reflect on your emotions, and uncover mood insights powered by AI.
         </FadeInText>
 
         <div className="border-t-[1px] border-[#999999] mt-6" />
 
         <form className="mt-6" onSubmit={saveJournal}>
-          {/* <input
-            type="date"
-            name="date"
-            id="date"
-            className="px-4 py-1 bg-[#f6f6f6] focs:bg-[#ebebeb] focus:outline-none transition duration-150 ease-in rounded-full"
-          /> */}
           <label htmlFor="entryText" className="block text-lg font-semibold">
             Today's note:
           </label>
@@ -127,11 +122,7 @@ const Journal = () => {
       ) : (
         response.moodData.length > 0 && (
           <div className="px-6 mt-8">
-            <p>
-              Interesting story! It seems you had quite an intense experience
-              today, filled with a mix of emotions. Here’s your mood data
-              reflecting that experience:
-            </p>
+            <p>{response.shortSummary}</p>
             <RadarChart moodData={response.moodData} />
             <p>To help improve your mood, consider these recommendations:</p>
             <div className="mt-4">
