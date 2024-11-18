@@ -12,10 +12,6 @@ export async function POST(req: Request) {
     return Response.json({ error: "Prompt is required" });
   }
 
-  const editedPrommpt =
-    "I want you to predict the mood of the journal below based on these six emotion: happiness, sadness, disgust, fear, surprise, anger. Create an object that consist of an array called moodData that consist of number from 1-100 that is the predicted mood. The object should also consist of recommendation array that gives three thing that maybe we can do to improve your mood based on the given journal (recommendation should be specific to what the user do on the journal, don't give general recommendation, make it as specific as possible). Don't return anything else beside the object. The journal is: /n" +
-    prompt;
-
   try {
     const model = vertexAI.preview.getGenerativeModel({
       model: "gemini-pro",

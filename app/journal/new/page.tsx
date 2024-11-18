@@ -14,15 +14,21 @@ import LoadingResponse from "@/components/loading/LoadingResponse";
 import Carousel from "@/components/utilities/Slider";
 
 // CSS
+import "react-calendar/dist/Calendar.css";
 
 // Image
 
 // Logo
 import { GoogleGeminiIcon } from "hugeicons-react";
+import { ArrowRight01Icon } from "hugeicons-react";
 
 // External
 import { motion, AnimatePresence } from "framer-motion";
 import Lenis from "lenis";
+
+import Calendar from "react-calendar";
+type ValuePiece = Date | null;
+type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 const Journal = () => {
   const { data: session } = useSession();
@@ -36,7 +42,15 @@ const Journal = () => {
     requestAnimationFrame(raf);
   }, []);
 
+  /* Sidebar */
   const [isMenuActive, setIsMenuActive] = useState(false);
+
+  /* Calendar */
+  const [isCalendarVisible, setIsCalendarVisible] = useState(false);
+  const toggleCalendar = () => {
+    setIsCalendarVisible((prev) => !prev);
+  };
+  const [value, onChange] = useState<Value>(new Date());
 
   const [journal, setJournal] = useState({ entryText: "" });
   const [response, setResponse] = useState({
@@ -95,6 +109,38 @@ const Journal = () => {
         </FadeInText>
 
         <div className="border-t-[1px] border-[#999999] mt-6" />
+
+        <div className="mt-3">
+          <motion.button
+            onClick={toggleCalendar}
+            className="flex items-center px-4 py-2 bg-black/10 rounded-full hover:bg-black/15 focus:outline-none"
+          >
+            <span className="mr-2">Expand Calendar</span>
+
+            <motion.div
+              initial={{ rotate: 0 }}
+              animate={{ rotate: isCalendarVisible ? 90 : 0 }} // Rotate the icon
+              transition={{ duration: 0.3 }}
+            >
+              <ArrowRight01Icon size={20} />{" "}
+            </motion.div>
+          </motion.button>
+
+          <AnimatePresence>
+            {isCalendarVisible && (
+              <motion.div
+                key="calendar"
+                initial={{ height: 0 }}
+                animate={{ height: "auto" }}
+                exit={{ height: 0 }}
+                transition={{ duration: 0.5 }}
+                className="mt-4 overflow-hidden"
+              >
+                <Calendar />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
 
         <form className="mt-6" onSubmit={saveJournal}>
           <label htmlFor="entryText" className="block text-lg font-semibold">
