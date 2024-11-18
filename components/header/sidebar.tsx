@@ -3,6 +3,7 @@ import React, { useState } from "react";
 
 // Next
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 // Component
 import SidebarLink from "./SidebarLink";
@@ -18,33 +19,36 @@ import styles from "./css/sidebar.module.css";
 import { menuSlide } from "./anim";
 import { motion } from "framer-motion";
 
-const navItems = [
-  {
-    title: "Home",
-
-    href: "/",
-  },
-
-  {
-    title: "Profile",
-
-    href: "/profile",
-  },
-
-  {
-    title: "Journal",
-
-    href: "/journal",
-  },
-
-  {
-    title: "Contact",
-
-    href: "/contact",
-  },
-];
-
 const Sidebar = () => {
+  const { data: session } = useSession();
+  const userId = (session?.user as { id: string }).id;
+
+  const navItems = [
+    {
+      title: "Home",
+
+      href: "/",
+    },
+
+    {
+      title: "Profile",
+
+      href: "/profile",
+    },
+
+    {
+      title: "Journals",
+
+      href: `/journals/${userId}`,
+    },
+
+    {
+      title: "Contact",
+
+      href: "/contact",
+    },
+  ];
+
   const pathname = usePathname();
   const [selectedIndicator, setSelectedIndicator] = useState(pathname);
 

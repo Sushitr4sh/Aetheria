@@ -28,10 +28,10 @@ import { AnimatePresence, easeInOut, motion } from "framer-motion";
 import Lenis from "lenis";
 import ArrowButton from "@/components/utilities/ArrowButton";
 
-export const metadata: Metadata = {
+/* export const metadata: Metadata = {
   title: "Page not found",
   description: "The page you are looking for does not exist.",
-};
+}; */
 
 const NotFound = () => {
   useEffect(() => {

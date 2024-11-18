@@ -70,7 +70,7 @@ const Journal = () => {
       }
 
       const userId = (session.user as { id: string }).id;
-      const fetchResponse = await fetch("/api/journal/new", {
+      const fetchResponse = await fetch("/api/journals/new", {
         method: "POST",
         body: JSON.stringify({
           userId,
