@@ -7,21 +7,22 @@ import { useSession } from "next-auth/react";
 // Component
 import MainHeader from "@/components/header/MainHeader";
 import Sidebar from "@/components/header/Sidebar";
+import ZoopText from "@/components/utilities/ZoopText";
+import FadeInText from "@/components/utilities/FadeInText";
+import RadarChart from "@/components/utilities/RadarChart";
+import LoadingResponse from "@/components/loading/LoadingResponse";
+import Carousel from "@/components/utilities/Slider";
 
 // CSS
 
 // Image
 
 // Logo
+import { GoogleGeminiIcon } from "hugeicons-react";
 
 // External
 import { motion, AnimatePresence } from "framer-motion";
 import Lenis from "lenis";
-import ZoopText from "@/components/utilities/ZoopText";
-import FadeInText from "@/components/utilities/FadeInText";
-import RadarChart from "@/components/utilities/RadarChart";
-import LoadingResponse from "@/components/loading/LoadingResponse";
-import Carousel from "@/components/utilities/Slider";
 
 const Journal = () => {
   const { data: session } = useSession();
@@ -42,6 +43,7 @@ const Journal = () => {
     moodData: [],
     recommendation: [],
     shortSummary: "",
+    isJournal: true,
   });
   const [submitting, setSubmitting] = useState(false);
   const saveJournal = async (e: React.FormEvent) => {
@@ -119,16 +121,30 @@ const Journal = () => {
         <div className="mt-8">
           <LoadingResponse />
         </div>
-      ) : (
-        response.moodData.length > 0 && (
-          <div className="px-6 mt-8">
-            <p>{response.shortSummary}</p>
-            <RadarChart moodData={response.moodData} />
-            <p>To help improve your mood, consider these recommendations:</p>
-            <div className="mt-4">
-              <Carousel recommendation={response.recommendation} />
-            </div>
+      ) : response.moodData.length > 0 && response.isJournal === true ? (
+        <div className="px-6 mt-8">
+          <div className="flex gap-x-2">
+            <GoogleGeminiIcon strokeWidth={2} />
+            <p className="text-lg font-semibold">AI Generated:</p>
           </div>
+          <p className="mt-2">{response.shortSummary}</p>
+          <RadarChart moodData={response.moodData} />
+          <p>To help improve your mood, consider these recommendations:</p>
+          <div className="mt-4">
+            <Carousel recommendation={response.recommendation} />
+          </div>
+        </div>
+      ) : (
+        response.isJournal === false && (
+          <>
+            <div className="flex gap-x-2 mt-4 px-6">
+              <GoogleGeminiIcon strokeWidth={2} />
+              <p className="text-lg font-semibold">AI Generated:</p>
+            </div>
+            <p className="mt-2 px-6 text-red-500">
+              Please write a valid journal entry!
+            </p>
+          </>
         )
       )}
     </section>

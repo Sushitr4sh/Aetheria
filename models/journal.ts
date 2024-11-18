@@ -30,6 +30,7 @@ const journalSchema = new Schema({
     type: String,
     required: true,
   },
+  isJournal: { type: Boolean, required: true },
 });
 
 const Journal = models.Journal || model("Journal", journalSchema);
