@@ -120,3 +120,36 @@ ${entryText}
     return new Response("Failed to update journal.", { status: 500 });
   }
 }
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { userId: string; journalId: string } }
+) {
+  const { userId, journalId } = params;
+
+  if (!userId || !journalId) {
+    return new Response("User ID and Journal ID are required", { status: 400 });
+  }
+
+  try {
+    await connectToDB();
+
+    // Find and delete the journal
+    const deletedJournal = await Journal.findOneAndDelete({
+      _id: journalId,
+      creator: userId,
+    });
+
+    if (!deletedJournal) {
+      return new Response("Journal not found.", { status: 404 });
+    }
+
+    return new Response(
+      JSON.stringify({ message: "Journal deleted successfully" }),
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error deleting journal:", error);
+    return new Response("Failed to delete journal.", { status: 500 });
+  }
+}

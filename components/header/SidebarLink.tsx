@@ -2,6 +2,7 @@ import React from "react";
 
 // Next
 import Link from "next/link";
+import CustomLink from "../transition/CustomLink";
 
 // Component
 

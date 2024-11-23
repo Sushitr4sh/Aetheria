@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 // Next
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import MainHeader from "@/components/header/MainHeader";
 import Sidebar from "@/components/header/Sidebar";
@@ -28,6 +29,7 @@ interface JournalDetailProps {
 
 const JournalDetail = ({ params }: JournalDetailProps) => {
   const { userId, journalId } = params;
+  const router = useRouter();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   /* Sidebar */
@@ -35,6 +37,7 @@ const JournalDetail = ({ params }: JournalDetailProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
 
   // Flash Message State
@@ -119,6 +122,47 @@ const JournalDetail = ({ params }: JournalDetailProps) => {
     setEditedText(journal.entryText);
   };
 
+  const handleDelete = async () => {
+    // Show confirmation dialog
+    if (!window.confirm("Are you sure you want to delete this journal?")) {
+      return;
+    }
+
+    try {
+      setIsDeleting(true);
+      const response = await fetch(
+        `/api/journals/${userId}/details/${journalId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete journal");
+      }
+
+      // Store success message in sessionStorage to show after redirect
+      sessionStorage.setItem(
+        "flashMessage",
+        JSON.stringify({
+          type: "success",
+          message: "Journal deleted successfully",
+        })
+      );
+
+      // Redirect back to journals list
+      router.push(`/journals/${userId}`);
+    } catch (err) {
+      console.error("Error deleting journal:", err);
+      setFlashMessage({
+        type: "error",
+        message: "Failed to delete journal. Please try again.",
+        isVisible: true,
+      });
+      setIsDeleting(false);
+    }
+  };
+
   const handleSave = async () => {
     try {
       setIsSaving(true);
@@ -178,6 +222,20 @@ const JournalDetail = ({ params }: JournalDetailProps) => {
   const handleCloseFlash = () => {
     setFlashMessage((prev) => ({ ...prev, isVisible: false }));
   };
+
+  // Check for flash message in sessionStorage on component mount
+  useEffect(() => {
+    const storedMessage = sessionStorage.getItem("flashMessage");
+    if (storedMessage) {
+      const { type, message } = JSON.parse(storedMessage);
+      setFlashMessage({
+        type,
+        message,
+        isVisible: true,
+      });
+      sessionStorage.removeItem("flashMessage");
+    }
+  }, []);
 
   if (isLoading) {
     return <LoadingResponse />;
@@ -252,12 +310,21 @@ const JournalDetail = ({ params }: JournalDetailProps) => {
                 </button>
               </>
             ) : (
-              <button
-                onClick={handleEdit}
-                className="bg-[#4734f7] px-3 py-1 rounded-lg text-white"
-              >
-                Edit Journal
-              </button>
+              <>
+                <button
+                  onClick={handleDelete}
+                  className="bg-red-500 px-3 py-1 rounded-lg text-white"
+                  disabled={isDeleting}
+                >
+                  {isDeleting ? "Deleting..." : "Delete Journal"}
+                </button>
+                <button
+                  onClick={handleEdit}
+                  className="bg-[#4734f7] px-3 py-1 rounded-lg text-white"
+                >
+                  Edit Journal
+                </button>
+              </>
             )}
           </div>
         </form>

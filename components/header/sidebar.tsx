@@ -4,6 +4,7 @@ import React, { useState } from "react";
 // Next
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 // Component
 import SidebarLink from "./SidebarLink";
@@ -90,9 +91,9 @@ const Sidebar = () => {
         </div>
 
         <div className={styles.footer}>
-          <a>Privacy Policy</a>
-          <a>Terms of Service</a>
-          <a>Disclaimer</a>
+          <Link href="/legal-information">Privacy Policy</Link>
+          <Link href="/legal-information">Terms of Service</Link>
+          <Link href="/legal-information">Disclaimer</Link>
         </div>
       </div>
     </motion.div>

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 
 // Next
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 // Component
 import MainHeader from "@/components/header/MainHeader";
@@ -20,7 +21,7 @@ import "react-calendar/dist/Calendar.css";
 
 // Logo
 import { GoogleGeminiIcon } from "hugeicons-react";
-import { ArrowRight01Icon } from "hugeicons-react";
+import { ArrowRight01Icon, ArrowLeft02Icon } from "hugeicons-react";
 
 // External
 import { motion, AnimatePresence } from "framer-motion";
@@ -32,6 +33,7 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 const Journal = () => {
   const { data: session } = useSession();
+  const userId = session?.user ? (session.user as { id: string }).id : null;
 
   useEffect(() => {
     const lenis = new Lenis();
@@ -113,12 +115,22 @@ const Journal = () => {
         {isMenuActive && <Sidebar />}
       </AnimatePresence>
       <article className="px-6 mt-28">
+        {userId && (
+          <Link
+            href={`/journals/${userId}`}
+            className="flex items-center gap-x-2 text-[#4734f7] mb-4"
+          >
+            <ArrowLeft02Icon />
+            Back to Journals
+          </Link>
+        )}
         <h2 className="md:hidden mb-6">
-          <ZoopText delay={0.25}>My Journal</ZoopText>
+          <ZoopText delay={0.25}>Write New Journal</ZoopText>
         </h2>
         <FadeInText delay={1}>
-          My Journal is your private space in Aetheria to record your thoughts,
-          reflect on your emotions, and uncover mood insights powered by AI.
+          Express yourself freely in this new journal entry. Our AI will analyze
+          your emotions and provide personalized insights to help you understand
+          your mood better.
         </FadeInText>
 
         <div className="border-t-[1px] border-[#999999] mt-6" />
@@ -155,7 +167,13 @@ const Journal = () => {
           </AnimatePresence>
         </div>
 
-        <form className="mt-6" onSubmit={saveJournal}>
+        <motion.form
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.25, delay: 2.25 }}
+          className="mt-6"
+          onSubmit={saveJournal}
+        >
           <label htmlFor="entryText" className="block text-lg font-semibold">
             Today's note:
           </label>
@@ -174,7 +192,7 @@ const Journal = () => {
               {submitting ? "Saving..." : "Save Journal"}
             </button>
           </div>
-        </form>
+        </motion.form>
       </article>
       {submitting ? (
         <div className="mt-8">

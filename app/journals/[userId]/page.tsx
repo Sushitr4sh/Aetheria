@@ -14,6 +14,7 @@ import FadeInText from "@/components/utilities/FadeInText";
 import RadarChart from "@/components/utilities/RadarChart";
 import LoadingResponse from "@/components/loading/LoadingResponse";
 import Carousel from "@/components/utilities/Slider";
+import FlashMessage from "@/components/utilities/FlashMessage";
 
 // CSS
 import "react-calendar/dist/Calendar.css";
@@ -35,7 +36,7 @@ interface Journal {
 }
 
 const MyJournal = () => {
-  const { data: session, status } = useSession(); // status helps track session loading
+  const { data: session, status } = useSession();
 
   // State hooks
   const [isMenuActive, setIsMenuActive] = useState(false);
@@ -43,14 +44,40 @@ const MyJournal = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
+
+  // Flash Message State
+  const [flashMessage, setFlashMessage] = useState({
+    type: "success" as "success" | "error",
+    message: "",
+    isVisible: false,
+  });
+
   const handleToggleReadMore = (id: string) => {
-    // Toggle the expansion state for the clicked card
     setExpandedCard(expandedCard === id ? null : id);
   };
+
   const [showMore, setShowMore] = useState<{ [date: string]: boolean }>({});
 
   // Fetch userId safely after session is available
   const userId = session?.user ? (session.user as { id: string }).id : null;
+
+  // Check for flash message in sessionStorage on component mount
+  useEffect(() => {
+    const storedMessage = sessionStorage.getItem("flashMessage");
+    if (storedMessage) {
+      const { type, message } = JSON.parse(storedMessage);
+      setFlashMessage({
+        type,
+        message,
+        isVisible: true,
+      });
+      sessionStorage.removeItem("flashMessage");
+    }
+  }, []);
+
+  const handleCloseFlash = () => {
+    setFlashMessage((prev) => ({ ...prev, isVisible: false }));
+  };
 
   // Scroll animation effect
   useEffect(() => {
@@ -128,8 +155,22 @@ const MyJournal = () => {
   if (!session) {
     return <div>No session found. Please log in.</div>;
   }
+
+  // Sort dates in descending order (newest first)
+  const sortedDates = Object.entries(groupedJournals).sort((a, b) => {
+    const dateA = new Date(a[0]).getTime();
+    const dateB = new Date(b[0]).getTime();
+    return dateB - dateA;
+  });
+
   return (
     <section className="flex flex-col w-full pb-6">
+      <FlashMessage
+        type={flashMessage.type}
+        message={flashMessage.message}
+        isVisible={flashMessage.isVisible}
+        onClose={handleCloseFlash}
+      />
       <MainHeader isActive={isMenuActive} onMenuClick={setIsMenuActive} />
       <AnimatePresence mode="wait">
         {isMenuActive && <Sidebar />}
@@ -156,7 +197,7 @@ const MyJournal = () => {
         <p className="ml-6 mt-4">You don't have any journal yet</p>
       )}
       <div className="mt-8 px-6">
-        {Object.entries(groupedJournals).map(([date, journals]) => {
+        {sortedDates.map(([date, journals]) => {
           // Determine the journals to display based on the showMore state
           const visibleJournals = showMore[date]
             ? journals
