@@ -63,6 +63,7 @@ const Journal = () => {
   const saveJournal = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    setError(null); // Reset previous errors before the request
 
     try {
       if (!session || !session.user) {
@@ -76,22 +77,34 @@ const Journal = () => {
           userId,
           entryText: journal.entryText,
         }),
+        headers: {
+          "Content-Type": "application/json", // Make sure to add Content-Type header for JSON requests
+        },
       });
 
+      // Check if the response is not OK (status code outside of the 2xx range)
       if (!fetchResponse.ok) {
-        throw new Error(`HTTP error! status: ${fetchResponse.status}`);
+        const errorData = await fetchResponse.json();
+        throw new Error(
+          errorData.message || "An error occurred while saving the journal."
+        );
       }
 
       // Parse the JSON response
       const data = await fetchResponse.json();
       // Set the response state
       setResponse(data);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      console.error(error);
+      // Capture the error message and set it to error state
+      setError(error.message || "Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
     }
   };
+
+  // Component state for handling error and response
+  const [error, setError] = useState<string | null>(null);
 
   return (
     <section className="flex flex-col w-full pb-6">
@@ -167,31 +180,64 @@ const Journal = () => {
         <div className="mt-8">
           <LoadingResponse />
         </div>
-      ) : response.moodData.length > 0 && response.isJournal === true ? (
-        <div className="px-6 mt-8">
-          <div className="flex gap-x-2">
+      ) : (
+        response.moodData.length > 0 &&
+        response.isJournal === true && (
+          <div className="px-6 mt-8">
+            <div className="flex gap-x-2">
+              <GoogleGeminiIcon strokeWidth={2} />
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                className="text-lg font-semibold"
+              >
+                AI Generated:
+              </motion.p>
+            </div>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.25 }}
+              className="mt-2"
+            >
+              {response.shortSummary}
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              <RadarChart moodData={response.moodData} />
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.75 }}
+            >
+              To help improve your mood, consider these recommendations:
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 1 }}
+              className="mt-4"
+            >
+              <Carousel recommendation={response.recommendation} />
+            </motion.div>
+          </div>
+        )
+      )}
+      {error && (
+        <>
+          <div className="flex gap-x-2 mt-4 px-6">
             <GoogleGeminiIcon strokeWidth={2} />
             <p className="text-lg font-semibold">AI Generated:</p>
           </div>
-          <p className="mt-2">{response.shortSummary}</p>
-          <RadarChart moodData={response.moodData} />
-          <p>To help improve your mood, consider these recommendations:</p>
-          <div className="mt-4">
-            <Carousel recommendation={response.recommendation} />
-          </div>
-        </div>
-      ) : (
-        response.isJournal === false && (
-          <>
-            <div className="flex gap-x-2 mt-4 px-6">
-              <GoogleGeminiIcon strokeWidth={2} />
-              <p className="text-lg font-semibold">AI Generated:</p>
-            </div>
-            <p className="mt-2 px-6 text-red-500">
-              Please write a valid journal entry!
-            </p>
-          </>
-        )
+          <p className="mt-2 px-6 text-red-500">
+            Please write a valid journal entry!
+          </p>
+        </>
       )}
     </section>
   );

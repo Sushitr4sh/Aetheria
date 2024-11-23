@@ -5,8 +5,9 @@ export async function GET(
   req: Request,
   { params }: { params: { userId: string } }
 ) {
-  const userId = "671630ad3d8482f7cf4a334b";
-  console.log("user id is", userId);
+  const { userId } = params;
+
+  console.log("User  ID is", userId);
 
   if (!userId) {
     return new Response("User ID is required", { status: 400 });
