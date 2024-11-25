@@ -38,6 +38,10 @@ const Sidebar = () => {
       href: `/journals/${userId}`,
     },
     {
+      title: "Tutorial",
+      href: "/tutorial",
+    },
+    {
       title: "Contact",
       href: "/contact",
     },
