@@ -18,8 +18,6 @@ import Hero01Img from "@/public/images/hero01.jpg";
 import Gif404 from "@/public/gifs/gif404.gif";
 
 // Logo
-import StickySidebar from "@/components/utilities/StickySidebar";
-import ChatbotMenu from "@/components/chatbot/ChatbotMenu";
 import ClipPathImage from "@/components/utilities/ClipPathImage";
 import FadeInText from "@/components/utilities/FadeInText";
 
@@ -87,7 +85,6 @@ const NotFound = () => {
             <div className="w-full border-b border-gray-300" />
           </Link>
         </motion.div>
-        <ChatbotMenu />
       </section>
     </div>
   );

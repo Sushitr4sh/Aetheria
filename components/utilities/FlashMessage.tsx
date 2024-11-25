@@ -32,7 +32,7 @@ const FlashMessage: React.FC<FlashMessageProps> = ({
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -100, opacity: 0 }}
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          className="fixed top-6 left-1/2 transform -translate-x-1/2 z-[200]"
+          className="fixed top-6 w-full flex justify-center z-[200]"
         >
           <div
             className={`px-6 py-3 rounded-lg font-semibold text-white shadow-lg ${

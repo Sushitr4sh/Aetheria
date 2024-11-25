@@ -55,7 +55,7 @@ const MainHeader = ({ isActive, onMenuClick }: MainHeaderProps) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.175, delay: 0.25, ease: easeInOut }}
-      className="py-4 px-6 flex fixed bg-white top-0 w-full justify-between items-center z-[100]"
+      className="py-4 lg:py-6 px-6 lg:px-8 flex fixed bg-white top-0 w-full justify-between items-center z-[100]"
     >
       <LogoReveal href="/" delay={1.5}>
         aetheria

@@ -24,7 +24,7 @@ const FadeInText = ({
 }) => {
   return (
     <motion.article
-      className="text-lg w-full font-medium leading-6"
+      className="text-lg sm:text-2xl lg:text-3xl w-full font-medium leading-6"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{

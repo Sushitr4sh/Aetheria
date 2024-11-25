@@ -23,7 +23,7 @@ const ZoopText = ({ children, delay }: { children: string; delay: number }) => {
     <motion.div
       initial="initial"
       animate="animate"
-      className="relative block overflow-hidden text-6xl md:text-7xl font-medium"
+      className="relative block overflow-hidden text-6xl sm:text-7xl lg:text-8xl font-medium"
       style={{ lineHeight: 1.125 }}
     >
       <div className="flex flex-wrap">

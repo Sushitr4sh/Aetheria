@@ -8,7 +8,7 @@ const Carousel = ({ recommendation }: { recommendation: string[] }) => {
         {recommendation.map((item, index) => (
           <div
             key={index}
-            className={`snap-center shrink-0 w-[80vw] flex items-center justify-center overflow-hidden bg-gray-200 p-4 rounded-xl`}
+            className={`snap-center shrink-0 w-[80vw] md:w-[50vw] lg:w-[20vw] flex items-center justify-center overflow-hidden bg-gray-200 p-4 rounded-xl`}
             // Set selected item on click
           >
             <div className="">

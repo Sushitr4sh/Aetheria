@@ -114,7 +114,7 @@ const Journal = () => {
       <AnimatePresence mode="wait">
         {isMenuActive && <Sidebar />}
       </AnimatePresence>
-      <article className="px-6 mt-28">
+      <article className="px-6 mt-28 md:px-32 lg:px-64">
         {userId && (
           <Link
             href={`/journals/${userId}`}
@@ -124,7 +124,7 @@ const Journal = () => {
             Back to Journals
           </Link>
         )}
-        <h2 className="md:hidden mb-6">
+        <h2 className="mb-6">
           <ZoopText delay={0.25}>Write New Journal</ZoopText>
         </h2>
         <FadeInText delay={1}>
@@ -201,7 +201,7 @@ const Journal = () => {
       ) : (
         response.moodData.length > 0 &&
         response.isJournal === true && (
-          <div className="px-6 mt-8">
+          <div className="px-6 mt-8 md:px-32 lg:px-64">
             <div className="flex gap-x-2">
               <GoogleGeminiIcon strokeWidth={2} />
               <motion.p
@@ -248,11 +248,11 @@ const Journal = () => {
       )}
       {error && (
         <>
-          <div className="flex gap-x-2 mt-4 px-6">
+          <div className="flex gap-x-2 mt-4 px-6 md:px-32 lg:px-64">
             <GoogleGeminiIcon strokeWidth={2} />
             <p className="text-lg font-semibold">AI Generated:</p>
           </div>
-          <p className="mt-2 px-6 text-red-500">
+          <p className="mt-2 px-6 text-red-500 md:px-32 lg:px-64">
             Please write a valid journal entry!
           </p>
         </>

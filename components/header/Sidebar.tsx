@@ -59,7 +59,7 @@ const Sidebar = () => {
       initial="initial"
       animate="enter"
       exit="exit"
-      className={`${styles.menu} z-[90]`}
+      className={`${styles.menu} z-[90] sm:max-w-96`}
     >
       <div className={styles.body}>
         <div

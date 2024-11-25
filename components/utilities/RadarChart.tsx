@@ -20,12 +20,18 @@ ChartJS.register(
   Legend
 );
 
-const RadarChart = ({ moodData }: { moodData: number[] }) => {
+const RadarChart = ({
+  moodData,
+  label,
+}: {
+  moodData: number[];
+  label?: string;
+}) => {
   const data = {
     labels: ["Happiness", "Sadness", "Disgust", "Fear", "Surprise", "Anger"],
     datasets: [
       {
-        label: "Today's Mood",
+        label: label || "Today's Mood",
         data: [
           moodData[0],
           moodData[1],

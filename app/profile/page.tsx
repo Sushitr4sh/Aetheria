@@ -1,22 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
-
-// Next
-import { useSession } from "next-auth/react";
-import { signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
-
-// Component
 import MainHeader from "@/components/header/MainHeader";
 import Sidebar from "@/components/header/Sidebar";
-
-// CSS
-
-// Image
-
-// Logo
-
-// External
 import { AnimatePresence } from "framer-motion";
 import Lenis from "lenis";
 import ZoopText from "@/components/utilities/ZoopText";
@@ -58,7 +45,7 @@ type Journal = {
 };
 
 const Profile = () => {
-  const { data: session, status } = useSession(); // Track session status
+  const { data: session, status } = useSession();
   const [journals, setJournals] = useState<Journal[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -75,7 +62,7 @@ const Profile = () => {
 
     journals.forEach((journal) => {
       journal.moodData.forEach((value, index) => {
-        emotionSeries[index].push(value); // No more TypeScript error
+        emotionSeries[index].push(value);
       });
     });
 
@@ -130,17 +117,11 @@ const Profile = () => {
       tooltip: { enabled: false },
     },
     scales: {
-      x: {
-        display: false,
-        grid: { drawTicks: false, drawBorder: false },
-      },
-      y: {
-        grid: { drawTicks: true, drawBorder: false },
-      },
+      x: { display: false, grid: { drawTicks: false, drawBorder: false } },
+      y: { grid: { drawTicks: true, drawBorder: false } },
     },
   };
 
-  // Fetch journals only when session is fully loaded and userId exists
   useEffect(() => {
     if (status === "authenticated" && session?.user) {
       const userId = (session.user as { id: string }).id;
@@ -151,14 +132,11 @@ const Profile = () => {
 
         try {
           const response = await fetch(`/api/journals/${userId}`);
-          if (!response.ok) {
-            throw new Error(`Error: ${response.statusText}`);
-          }
+          if (!response.ok) throw new Error(`Error: ${response.statusText}`);
 
           const data = await response.json();
           setJournals(data);
 
-          // Calculate the average of moodData for each index
           const moodDataLength = data[0]?.moodData.length || 0;
           const summedMoodData = new Array(moodDataLength).fill(0);
 
@@ -179,7 +157,7 @@ const Profile = () => {
 
       fetchJournals();
     }
-  }, [session, status]); // Ensure the hook runs when session or status changes
+  }, [session, status]);
 
   useEffect(() => {
     if (
@@ -191,17 +169,11 @@ const Profile = () => {
         try {
           const response = await fetch("/api/journals/summary", {
             method: "POST",
-            body: JSON.stringify({
-              moodData: chartData, // Send average mood data
-            }),
-            headers: {
-              "Content-Type": "application/json",
-            },
+            body: JSON.stringify({ moodData: chartData }),
+            headers: { "Content-Type": "application/json" },
           });
 
-          if (!response.ok) {
-            throw new Error(`Error: ${response.statusText}`);
-          }
+          if (!response.ok) throw new Error(`Error: ${response.statusText}`);
 
           const data = await response.json();
           setProgressSummary(data.summary);
@@ -214,7 +186,6 @@ const Profile = () => {
     }
   }, [averageMoodData, status, session]);
 
-  // Initialize Lenis for smooth scrolling
   useEffect(() => {
     const lenis = new Lenis();
     function raf(time: any) {
@@ -223,7 +194,7 @@ const Profile = () => {
     }
     requestAnimationFrame(raf);
 
-    return () => lenis.destroy(); // Clean up Lenis
+    return () => lenis.destroy();
   }, []);
 
   const handleSignOut = () => {
@@ -237,13 +208,18 @@ const Profile = () => {
   if (!session) {
     return <div>No session found. Please log in.</div>;
   }
+
+  const truncateText = (text: string, maxLength: number) => {
+    return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
+  };
+
   return (
     <section className="flex flex-col w-full h-[100dvh]">
       <MainHeader isActive={isMenuActive} onMenuClick={setIsMenuActive} />
       <AnimatePresence mode="wait">
         {isMenuActive && <Sidebar />}
       </AnimatePresence>
-      <article className="px-6 mt-28">
+      <article className="px-6 mt-28 md:px-32 lg:px-64">
         <div className="md:hidden">
           <ZoopText delay={0.25}>My Profile</ZoopText>
         </div>
@@ -259,10 +235,14 @@ const Profile = () => {
         </div>
         <div className="flex gap-x-4 mt-20 items-center w-full">
           <div className="mb-1">
-            <p className="text-3xl">{session?.user.name}</p>
-            <p className="text-gray-400">{session?.user.email}</p>
+            <p className="text-3xl">
+              {truncateText(session?.user.name || "", 13)}
+            </p>
+            <p className="text-gray-400">
+              {truncateText(session?.user.email || "", 23)}
+            </p>
           </div>
-          <div className="flex flex-grow justify-center">
+          <div className="flex flex-grow justify-end">
             <button
               type="button"
               onClick={handleSignOut}
@@ -273,17 +253,19 @@ const Profile = () => {
           </div>
         </div>
         <div className="mt-4 mb-8 flex flex-col gap-y-4">
-          <div>
-            <p className="text-xl font-semibold">Mood Progress:</p>
+          <div className="lg:max-w-[60%]">
+            <p className="text-xl font-semibold lg:text-3xl">Mood Progress:</p>
             <Line data={chartData} options={chartOptions} />
           </div>
           <div className="mt-4">
-            <p className="font-semibold mb-1">Summary:</p>
-            {progressSummary}
+            <p className="font-semibold mb-1 text-xl lg:text-3xl">Summary:</p>
+            <span className="lg:text-xl">{progressSummary}</span>
           </div>
           <div>
-            <p className="text-xl font-semibold mt-4">Your Average Mood:</p>
-            <RadarChart moodData={averageMoodData} />
+            <p className="text-xl font-semibold mt-4 lg:text-3xl">
+              Your Average Mood:
+            </p>
+            <RadarChart label="Average Mood" moodData={averageMoodData} />
           </div>
         </div>
       </article>

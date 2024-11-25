@@ -37,7 +37,7 @@ const LegalInformation = () => {
       <AnimatePresence mode="wait">
         {isMenuActive && <Sidebar />}
       </AnimatePresence>
-      <article className="px-6 mt-28">
+      <article className="px-6 mt-28 md:px-32 lg:px-64">
         <Link
           href="/"
           className="flex items-center gap-x-2 text-[#4734f7] mb-4"
@@ -45,7 +45,7 @@ const LegalInformation = () => {
           <ArrowLeft02Icon />
           Back to Home
         </Link>
-        <h2 className="md:hidden mb-6">
+        <h2 className="mb-6">
           <ZoopText delay={0.25}>Legal Information</ZoopText>
         </h2>
         <FadeInText delay={1}>

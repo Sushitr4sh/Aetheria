@@ -175,8 +175,8 @@ const MyJournal = () => {
       <AnimatePresence mode="wait">
         {isMenuActive && <Sidebar />}
       </AnimatePresence>
-      <article className="px-6 mt-28">
-        <h2 className="md:hidden mb-6">
+      <article className="px-6 mt-28 md:px-32 lg:px-64">
+        <h2 className="mb-6">
           <ZoopText delay={0.25}>My Journals</ZoopText>
         </h2>
         <FadeInText delay={1}>
@@ -188,15 +188,17 @@ const MyJournal = () => {
       </article>
       <Link
         href="/journals/new"
-        className="ml-6 mt-4 px-4 py-1 rounded-lg text-white font-semibold bg-[#4734f7] self-start flex items-center gap-x-1"
+        className="ml-6 mt-4 px-4 py-1 rounded-lg text-white font-semibold bg-[#4734f7] self-start flex items-center gap-x-1 md:mx-32 lg:mx-64"
       >
         Create Journal
         <PlusSignIcon width={15} height={15} strokeWidth={4} />
       </Link>
       {journals.length === 0 && (
-        <p className="ml-6 mt-4">You don't have any journal yet</p>
+        <p className="ml-6 mt-4 md:mx-32 lg:mx-64">
+          You don't have any journal yet
+        </p>
       )}
-      <div className="mt-8 px-6">
+      <div className="mt-8 px-6 mx:px-32 lg:px-64 lg:grid lg:grid-cols-2 xl:grid-cols-3 lg:gap-4">
         {sortedDates.map(([date, journals]) => {
           // Determine the journals to display based on the showMore state
           const visibleJournals = showMore[date]

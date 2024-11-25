@@ -257,7 +257,7 @@ const JournalDetail = ({ params }: JournalDetailProps) => {
       <AnimatePresence mode="wait">
         {isMenuActive && <Sidebar />}
       </AnimatePresence>
-      <article className="px-6 mt-28">
+      <article className="px-6 mt-28 md:px-32 lg:px-64">
         <Link
           href={`/journals/${userId}`}
           className="flex items-center gap-x-2 text-[#4734f7] mb-4"
@@ -265,7 +265,7 @@ const JournalDetail = ({ params }: JournalDetailProps) => {
           <ArrowLeft02Icon />
           Back to Journals
         </Link>
-        <h2 className="md:hidden mb-6">
+        <h2 className="mb-6">
           <ZoopText delay={0.25}>My Journal</ZoopText>
         </h2>
         <FadeInText delay={1}>
@@ -329,7 +329,7 @@ const JournalDetail = ({ params }: JournalDetailProps) => {
           </div>
         </form>
       </article>
-      <div className="px-6 mt-8">
+      <div className="px-6 mt-8 md:px-32 lg:px-64">
         <div className="flex gap-x-2">
           <GoogleGeminiIcon strokeWidth={2} />
           <motion.p

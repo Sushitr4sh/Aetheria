@@ -28,7 +28,7 @@ const ClipPathImage: FC<ClipPathImageProps> = ({
   delay,
 }) => {
   return (
-    <div className="relative w-[70%] md:w-[25%] overflow-hidden my-2">
+    <div className="relative min-w-36 max-w-64 overflow-hidden my-2">
       <motion.div
         className="bg-white w-full h-full z-10 absolute"
         initial={{ x: "0%" }}
@@ -39,7 +39,7 @@ const ClipPathImage: FC<ClipPathImageProps> = ({
       <Image
         src={backgroundImage}
         alt="two people smiling"
-        className={`object-cover ${
+        className={`object-cover w-full ${
           gif ? "object-center" : "object-right-top"
         }  aspect-[21/9]`}
         priority={true}
