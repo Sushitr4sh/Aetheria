@@ -36,6 +36,7 @@ export async function POST(req: Request) {
    - Focus on constructive, supportive, and practical suggestions
    - Consider the specific challenges or experiences mentioned
    - Aim to provide compassionate, non-judgmental guidance
+   - You can provide user a link to a website if you think the user can benefit from it.
   3. SUMMARY REQUIREMENTS:
    - Craft a concise, empathetic summary
    - Acknowledge the writer's emotional experience

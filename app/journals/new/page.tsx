@@ -140,7 +140,7 @@ const Journal = () => {
             onClick={toggleCalendar}
             className="flex items-center px-4 py-2 bg-black/10 rounded-full hover:bg-black/15 focus:outline-none"
           >
-            <span className="mr-2">Expand Calendar</span>
+            <span className="mr-2">Tips for Writing a Daily Journal?</span>
 
             <motion.div
               initial={{ rotate: 0 }}
@@ -155,13 +155,112 @@ const Journal = () => {
             {isCalendarVisible && (
               <motion.div
                 key="calendar"
-                initial={{ height: 0 }}
-                animate={{ height: "auto" }}
-                exit={{ height: 0 }}
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.5 }}
                 className="mt-4 overflow-hidden"
               >
-                <Calendar />
+                <div className="bg-white p-6 rounded-lg border border-[#ECECEC] mx-auto">
+                  <h1 className="text-2xl font-bold text-gray-800 mb-4">
+                    Tips for Writing a Meaningful Daily Journal
+                  </h1>
+                  <ul className="space-y-4 text-gray-700">
+                    <li className="flex items-start">
+                      <span className="bg-purple-500 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center mr-4 shrink-0 mt-2">
+                        1
+                      </span>
+                      <div>
+                        <p className="font-semibold">Be Honest and Authentic</p>
+                        <p>
+                          Write about your real feelings and experiences.
+                          Journaling works best when you're truthful with
+                          yourself. There's no need to embellish or
+                          fabricate—this is your safe space.
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="bg-purple-500 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center mr-4 shrink-0 mt-2">
+                        2
+                      </span>
+                      <div>
+                        <p className="font-semibold">
+                          Focus on Specific Events or Emotions
+                        </p>
+                        <p>
+                          Instead of trying to capture your entire day, zoom in
+                          on one or two specific moments that stood out. Reflect
+                          on what you felt, why you felt it, and how it impacted
+                          you.
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="bg-purple-500 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center mr-4 shrink-0 mt-2">
+                        3
+                      </span>
+                      <div>
+                        <p className="font-semibold">Embrace Your Emotions</p>
+                        <p>
+                          No emotion is too small or too big to write about.
+                          Whether you're feeling excited, upset, or confused,
+                          expressing it helps you process your thoughts.
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="bg-purple-500 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center mr-4 shrink-0 mt-2">
+                        4
+                      </span>
+                      <div>
+                        <p className="font-semibold">Add Depth</p>
+                        <p>
+                          Explore the "why" behind your feelings. For example,
+                          if you felt proud, what made you feel that way? If you
+                          felt scared, what triggered that reaction?
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="bg-purple-500 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center mr-4 shrink-0 mt-2">
+                        5
+                      </span>
+                      <div>
+                        <p className="font-semibold">Write Freely</p>
+                        <p>
+                          Don’t worry about grammar, spelling, or structure. Let
+                          your thoughts flow naturally. This is about
+                          self-expression, not perfection.
+                        </p>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <div className="border-t border-gray-200 mt-8 pt-6">
+                    <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                      Example Journal Entry
+                    </h2>
+                    <div className="bg-gray-50 p-4 rounded-lg shadow-inner">
+                      <p className="text-gray-600 text-sm mb-2">
+                        <span className="font-bold">Date:</span> November 23,
+                        2024
+                      </p>
+                      <p className="text-gray-700">
+                        I can’t believe the big presentation is tomorrow. My
+                        stomach has been in knots all day just thinking about
+                        it. I’ve prepared as much as I can, but there’s still
+                        this nagging worry about forgetting something important.
+                      </p>
+                      <p className="text-gray-700 mt-4">
+                        At the same time, I feel a strange excitement. This is a
+                        chance to showcase all the hard work I’ve put in over
+                        the past few weeks. It’s a little terrifying but also
+                        thrilling.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
