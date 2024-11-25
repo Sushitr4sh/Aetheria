@@ -11,16 +11,17 @@ export async function POST(req: Request) {
     const moodDataString = JSON.stringify(moodData);
 
     const prompt = `
-      1. Analyze the following data representing a user's emotional progress over time.
-      The data consists of six emotions: Happiness, Sadness, Disgust, Fear, Surprise, and Anger.
-      For each emotion, describe the general trend (e.g., increasing, decreasing, fluctuating)
-      and identify any significant peaks, drops, or steady patterns.
-      Provide an overall summary of the user's emotional journey, highlighting any correlations or notable changes.
-      2. Ensure the summary is concise, insightful, and written in a friendly tone. Don't make it too long, maximal one paragraph.
-      3. Your summary should be like you're talking to the user, and don't forget to give feedback to the user progress.
-      4. At the end of the response, tell user to to take a look at their average mood.
-      5. If the data is empty, please tell the user to start creating a journal.
-      ${moodDataString}
+    1. Analyze the following data representing a user's emotional progress over time. The data consists of six emotions: Happiness, Sadness, Disgust, Fear, Surprise, and Anger. For each emotion, describe the general trend (e.g., increasing, decreasing, fluctuating) and identify any significant peaks, drops, or steady patterns. Highlight any correlations or notable changes that may indicate shifts in the user's emotional state.
+
+    2. Your summary should be concise, insightful, and written in a friendly, encouraging tone. Aim for a maximum of one paragraph. 
+
+    3. Write as if you're having a conversation with the user, providing thoughtful feedback on their emotional progress. Acknowledge their efforts and any positive changes, while also gently guiding them on areas for improvement.
+
+    4. At the end of your response, encourage the user to take a look at their average mood to gain further insights into their emotional well-being.
+
+    5. If the data is empty, kindly remind the user to start creating a journal to track their emotions and experiences.
+
+    ${moodDataString}
     `;
 
     console.log("moodData received in api", moodDataString);

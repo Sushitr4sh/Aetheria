@@ -1,14 +1,40 @@
 "use client";
-import React from "react";
+import { useEffect, useState } from "react";
+
 import Image from "next/image";
-import { easeInOut, motion } from "framer-motion";
+import {
+  signIn,
+  useSession,
+  getProviders,
+  LiteralUnion,
+  ClientSafeProvider,
+} from "next-auth/react";
+import { BuiltInProviderType } from "next-auth/providers/index";
+
 import BarChart from "../utilities/BarChart";
 import Hero02Img from "../../public/images/hero02.jpg";
 import Hero03Img from "../../public/images/hero03.jpg";
 import InsightImg from "../../public/images/insight.jpg";
 import SupportImg from "../../public/images/support.jpg";
 
+import { easeInOut, motion } from "framer-motion";
+
+type ProviderState = Record<
+  LiteralUnion<BuiltInProviderType, string>,
+  ClientSafeProvider
+> | null;
+
 const Parallax = () => {
+  const { data: session } = useSession();
+  const [providers, setProviders] = useState<ProviderState>();
+  useEffect(() => {
+    const setUpProviders = async () => {
+      const response = await getProviders();
+      setProviders(response);
+    };
+
+    setUpProviders();
+  }, []);
   return (
     <section className="w-full bg-white relative mt-[100dvh] -z-40 pb-6 lg:pb-12">
       {/* Hero Section 1 */}
@@ -95,7 +121,7 @@ const Parallax = () => {
       </div>
 
       {/* Bar Chart */}
-      <div className="px-16 mt-8">
+      <div className="container mx-auto px-6 lg:px-12 mt-8">
         <BarChart />
       </div>
 
@@ -176,14 +202,19 @@ const Parallax = () => {
             Discover how Aetheria can help you take control of your mental
             well-being, one day at a time.
           </p>
-          <motion.button
-            className="bg-[#4a90e2] text-white px-8 py-4 rounded-full text-lg lg:text-xl font-bold"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            transition={{ ease: easeInOut, duration: 0.3 }}
-          >
-            Get Started
-          </motion.button>
+          {providers &&
+            Object.values(providers).map((provider) => (
+              <motion.button
+                className="bg-[#4a90e2] text-white px-8 py-4 rounded-full text-lg lg:text-xl font-bold"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ ease: easeInOut, duration: 0.3 }}
+                key={provider.name}
+                onClick={() => signIn(provider.id)}
+              >
+                Get Started
+              </motion.button>
+            ))}
         </div>
       </div>
     </section>

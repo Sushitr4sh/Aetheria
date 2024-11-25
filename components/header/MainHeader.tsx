@@ -7,7 +7,6 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   signIn,
-  signOut,
   useSession,
   getProviders,
   LiteralUnion,

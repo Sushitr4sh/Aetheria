@@ -195,7 +195,7 @@ const Journal = () => {
         </motion.form>
       </article>
       {submitting ? (
-        <div className="mt-8">
+        <div className="mt-8 md:px-32 lg:px-64">
           <LoadingResponse />
         </div>
       ) : (

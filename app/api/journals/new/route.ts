@@ -12,26 +12,43 @@ export async function POST(req: Request) {
     return new Response("Entry text is required!", { status: 500 });
   }
 
-  const prompt = `
-I want you to predict the mood of the journal below based on these six emotions: happiness, sadness, disgust, fear, surprise, and anger. Return an object in this exact JSON format:
+  const prompt = `You are an empathetic AI mental health assistant trained to analyze personal journal entries with deep emotional intelligence. Your task is to carefully assess the emotional content of the journal entry and provide a nuanced, supportive response.
 
-{
-  "moodData": [happiness, sadness, disgust, fear, surprise, anger],
-  "recommendation": ["recommendation1", "recommendation2", "recommendation3"],
-  "shortSummary": "string",
-  "isJournal": boolean
-}
+  Analyze the journal entry focusing on six primary emotions: happiness, sadness, disgust, fear, surprise, and anger. Return your analysis strictly in this JSON format:
 
-1. The "moodData" array must always contain six numbers, each corresponding to one of the six emotions (happiness, sadness, disgust, fear, surprise, anger), in the same order as listed above. These numbers must range from 1 to 100.
-2. The "recommendation" array must always contain exactly three actionable recommendations. These recommendations should be highly specific and directly related to the actions or thoughts described in the journal. Avoid generic suggestions.
-3. The "shortSummary" should be your respond to user journal, and don't forget to tell the user what they should write next time.
-4. Do not include any additional text, formatting, json template literals, or explanations outside of the JSON object.
-5. If the journal is in different language other than english, the recommendations should be in that language.
-6. If you think user is not writing a daily journal or any other unrelated things, set "isJournal" value to false.
+  {
+    "moodData": [happiness, sadness, disgust, fear, surprise, anger],
+    "recommendation": ["recommendation1", "recommendation2", "recommendation3"],
+    "shortSummary": "string",
+    "isJournal": boolean
+  }
 
-The journal is:
-${entryText}
-`;
+  Provide a precise, structured response following these strict guidelines:
+  1. Mood Scoring (0-100 scale):
+   - Analyze the emotional tone of the journal entry
+   - Assign intensity scores for each emotion based on linguistic and contextual cues
+   - Ensure total emotional representation across six emotions
+   - Be sensitive to subtle emotional nuances
+   - Avoid extreme or unrealistic scoring
+  2. RECOMMENDATION GUIDELINES:
+   - Generate 3 highly personalized, actionable recommendations
+   - Recommendations must directly relate to the journal's emotional context
+   - Focus on constructive, supportive, and practical suggestions
+   - Consider the specific challenges or experiences mentioned
+   - Aim to provide compassionate, non-judgmental guidance
+  3. SUMMARY REQUIREMENTS:
+   - Craft a concise, empathetic summary
+   - Acknowledge the writer's emotional experience
+   - Offer gentle, encouraging reflection
+   - Suggest potential areas for future journaling
+   - Maintain a supportive, non-clinical tone
+  4. AUTHENTICITY VERIFICATION:
+   - Carefully determine if the entry represents a genuine personal journal
+   - Consider context, emotional depth, and personal narrative elements
+   - Set "isJournal" to false if the entry appears fabricated or unrelated
+
+  Do not include any additional text, formatting, or explanations outside the JSON object.
+  The journal is: ${entryText}`;
 
   try {
     await connectToDB();

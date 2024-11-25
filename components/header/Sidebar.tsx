@@ -21,31 +21,24 @@ import { menuSlide } from "./anim";
 import { motion } from "framer-motion";
 
 const Sidebar = () => {
-  const { data: session } = useSession();
-  const userId = (session?.user as { id: string }).id;
+  const { data: session, status } = useSession();
+  const userId = session?.user?.id;
 
   const navItems = [
     {
       title: "Home",
-
       href: "/",
     },
-
     {
       title: "Profile",
-
       href: "/profile",
     },
-
     {
       title: "Journals",
-
       href: `/journals/${userId}`,
     },
-
     {
       title: "Contact",
-
       href: "/contact",
     },
   ];
