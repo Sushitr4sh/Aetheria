@@ -13,11 +13,10 @@ import FadeInText from "@/components/utilities/FadeInText";
 import RadarChart from "@/components/utilities/RadarChart";
 import LoadingResponse from "@/components/loading/LoadingResponse";
 import Carousel from "@/components/utilities/Slider";
+import FlashMessage from "@/components/utilities/FlashMessage";
 
 // CSS
 import "react-calendar/dist/Calendar.css";
-
-// Image
 
 // Logo
 import { GoogleGeminiIcon } from "hugeicons-react";
@@ -44,16 +43,10 @@ const Journal = () => {
     requestAnimationFrame(raf);
   }, []);
 
-  /* Sidebar */
+  /* States */
   const [isMenuActive, setIsMenuActive] = useState(false);
-
-  /* Calendar */
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
-  const toggleCalendar = () => {
-    setIsCalendarVisible((prev) => !prev);
-  };
   const [value, onChange] = useState<Value>(new Date());
-
   const [journal, setJournal] = useState({ entryText: "" });
   const [response, setResponse] = useState({
     moodData: [],
@@ -62,8 +55,43 @@ const Journal = () => {
     isJournal: true,
   });
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [flashMessage, setFlashMessage] = useState({
+    isVisible: false,
+    type: "error" as "success" | "error",
+    message: "",
+  });
+
+  /* Functions */
+  const toggleCalendar = () => {
+    setIsCalendarVisible((prev) => !prev);
+  };
+
+  const countWords = (text: string) => {
+    return text
+      .trim()
+      .split(/\s+/)
+      .filter((word) => word.length > 0).length;
+  };
+
+  const handleFlashClose = () => {
+    setFlashMessage((prev) => ({ ...prev, isVisible: false }));
+  };
+
   const saveJournal = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Check word count
+    const wordCount = countWords(journal.entryText);
+    if (wordCount < 50) {
+      setFlashMessage({
+        isVisible: true,
+        type: "error",
+        message: `Your journal entry needs at least 50 words. Current word count: ${wordCount}`,
+      });
+      return;
+    }
+
     setSubmitting(true);
     setError(null); // Reset previous errors before the request
 
@@ -80,11 +108,10 @@ const Journal = () => {
           entryText: journal.entryText,
         }),
         headers: {
-          "Content-Type": "application/json", // Make sure to add Content-Type header for JSON requests
+          "Content-Type": "application/json",
         },
       });
 
-      // Check if the response is not OK (status code outside of the 2xx range)
       if (!fetchResponse.ok) {
         const errorData = await fetchResponse.json();
         throw new Error(
@@ -92,24 +119,31 @@ const Journal = () => {
         );
       }
 
-      // Parse the JSON response
       const data = await fetchResponse.json();
-      // Set the response state
       setResponse(data);
+
+      // Show success message
+      setFlashMessage({
+        isVisible: true,
+        type: "success",
+        message: "Journal entry saved successfully!",
+      });
     } catch (error: any) {
       console.error(error);
-      // Capture the error message and set it to error state
       setError(error.message || "Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
     }
   };
 
-  // Component state for handling error and response
-  const [error, setError] = useState<string | null>(null);
-
   return (
     <section className="flex flex-col w-full pb-6">
+      <FlashMessage
+        type={flashMessage.type}
+        message={flashMessage.message}
+        isVisible={flashMessage.isVisible}
+        onClose={handleFlashClose}
+      />
       <MainHeader isActive={isMenuActive} onMenuClick={setIsMenuActive} />
       <AnimatePresence mode="wait">
         {isMenuActive && <Sidebar />}
@@ -144,7 +178,7 @@ const Journal = () => {
 
             <motion.div
               initial={{ rotate: 0 }}
-              animate={{ rotate: isCalendarVisible ? 90 : 0 }} // Rotate the icon
+              animate={{ rotate: isCalendarVisible ? 90 : 0 }}
               transition={{ duration: 0.3 }}
             >
               <ArrowRight01Icon size={20} />{" "}
@@ -229,7 +263,7 @@ const Journal = () => {
                       <div>
                         <p className="font-semibold">Write Freely</p>
                         <p>
-                          Don’t worry about grammar, spelling, or structure. Let
+                          Don't worry about grammar, spelling, or structure. Let
                           your thoughts flow naturally. This is about
                           self-expression, not perfection.
                         </p>
@@ -247,15 +281,15 @@ const Journal = () => {
                         2024
                       </p>
                       <p className="text-gray-700">
-                        I can’t believe the big presentation is tomorrow. My
+                        I can't believe the big presentation is tomorrow. My
                         stomach has been in knots all day just thinking about
-                        it. I’ve prepared as much as I can, but there’s still
+                        it. I've prepared as much as I can, but there's still
                         this nagging worry about forgetting something important.
                       </p>
                       <p className="text-gray-700 mt-4">
                         At the same time, I feel a strange excitement. This is a
-                        chance to showcase all the hard work I’ve put in over
-                        the past few weeks. It’s a little terrifying but also
+                        chance to showcase all the hard work I've put in over
+                        the past few weeks. It's a little terrifying but also
                         thrilling.
                       </p>
                     </div>

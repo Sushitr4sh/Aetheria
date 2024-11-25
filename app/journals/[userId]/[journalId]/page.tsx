@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+// Components
 import MainHeader from "@/components/header/MainHeader";
 import Sidebar from "@/components/header/Sidebar";
 import ZoopText from "@/components/utilities/ZoopText";
@@ -15,9 +16,11 @@ import RadarChart from "@/components/utilities/RadarChart";
 import Carousel from "@/components/utilities/Slider";
 import FlashMessage from "@/components/utilities/FlashMessage";
 
+// Icons
 import { GoogleGeminiIcon } from "hugeicons-react";
 import { ArrowLeft02Icon } from "hugeicons-react";
 
+// Animation
 import { motion, AnimatePresence } from "framer-motion";
 
 interface JournalDetailProps {
@@ -32,22 +35,20 @@ const JournalDetail = ({ params }: JournalDetailProps) => {
   const router = useRouter();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  /* Sidebar */
+  /* States */
   const [isMenuActive, setIsMenuActive] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
-
-  // Flash Message State
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [flashMessage, setFlashMessage] = useState({
     type: "success" as "success" | "error",
     message: "",
     isVisible: false,
   });
-
-  // State hooks
   const [journal, setJournal] = useState({
     entryText: "",
     moodData: [],
@@ -57,8 +58,13 @@ const JournalDetail = ({ params }: JournalDetailProps) => {
     updatedAt: "",
   });
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  /* Functions */
+  const countWords = (text: string) => {
+    return text
+      .trim()
+      .split(/\s+/)
+      .filter((word) => word.length > 0).length;
+  };
 
   const formatDateTime = (dateString: string) => {
     if (!dateString) return "";
@@ -73,18 +79,127 @@ const JournalDetail = ({ params }: JournalDetailProps) => {
     });
   };
 
-  // Fetch journal details when component mounts
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditedText(journal.entryText);
+  };
+
+  const handleCloseFlash = () => {
+    setFlashMessage((prev) => ({ ...prev, isVisible: false }));
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm("Are you sure you want to delete this journal?")) {
+      return;
+    }
+
+    try {
+      setIsDeleting(true);
+      const response = await fetch(
+        `/api/journals/${userId}/details/${journalId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete journal");
+      }
+
+      sessionStorage.setItem(
+        "flashMessage",
+        JSON.stringify({
+          type: "success",
+          message: "Journal deleted successfully",
+        })
+      );
+
+      router.push(`/journals/${userId}`);
+    } catch (err) {
+      console.error("Error deleting journal:", err);
+      setFlashMessage({
+        type: "error",
+        message: "Failed to delete journal. Please try again.",
+        isVisible: true,
+      });
+      setIsDeleting(false);
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      setIsSaving(true);
+
+      // Check if the text has actually changed
+      if (editedText.trim() === journal.entryText.trim()) {
+        setFlashMessage({
+          type: "success",
+          message: "No changes were made to the journal",
+          isVisible: true,
+        });
+        setIsEditing(false);
+        return;
+      }
+
+      // Check word count
+      const wordCount = countWords(editedText);
+      if (wordCount < 50) {
+        setFlashMessage({
+          type: "error",
+          message: `Your journal entry needs at least 50 words. Current word count: ${wordCount}`,
+          isVisible: true,
+        });
+        setIsSaving(false);
+        return;
+      }
+
+      const response = await fetch(
+        `/api/journals/${userId}/details/${journalId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ entryText: editedText }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update journal");
+      }
+
+      const updatedJournal = await response.json();
+      setJournal(updatedJournal);
+      setAnimationKey((prev) => prev + 1);
+
+      setFlashMessage({
+        type: "success",
+        message: "Journal updated successfully!",
+        isVisible: true,
+      });
+    } catch (err) {
+      console.error("Error updating journal:", err);
+      setFlashMessage({
+        type: "error",
+        message: "Failed to update journal. Please try again.",
+        isVisible: true,
+      });
+    } finally {
+      setIsSaving(false);
+      setIsEditing(false);
+    }
+  };
+
+  /* Effects */
   useEffect(() => {
     const fetchJournal = async () => {
       if (!userId || !journalId) return;
 
       try {
-        console.log(
-          "Fetching journal for userId:",
-          userId,
-          "and journalId:",
-          journalId
-        );
         const response = await fetch(
           `/api/journals/${userId}/details/${journalId}`
         );
@@ -113,117 +228,6 @@ const JournalDetail = ({ params }: JournalDetailProps) => {
     }
   }, [isEditing]);
 
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
-
-  const handleCancel = () => {
-    setIsEditing(false);
-    setEditedText(journal.entryText);
-  };
-
-  const handleDelete = async () => {
-    // Show confirmation dialog
-    if (!window.confirm("Are you sure you want to delete this journal?")) {
-      return;
-    }
-
-    try {
-      setIsDeleting(true);
-      const response = await fetch(
-        `/api/journals/${userId}/details/${journalId}`,
-        {
-          method: "DELETE",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to delete journal");
-      }
-
-      // Store success message in sessionStorage to show after redirect
-      sessionStorage.setItem(
-        "flashMessage",
-        JSON.stringify({
-          type: "success",
-          message: "Journal deleted successfully",
-        })
-      );
-
-      // Redirect back to journals list
-      router.push(`/journals/${userId}`);
-    } catch (err) {
-      console.error("Error deleting journal:", err);
-      setFlashMessage({
-        type: "error",
-        message: "Failed to delete journal. Please try again.",
-        isVisible: true,
-      });
-      setIsDeleting(false);
-    }
-  };
-
-  const handleSave = async () => {
-    try {
-      setIsSaving(true);
-
-      // Check if the text has actually changed
-      if (editedText.trim() === journal.entryText.trim()) {
-        // No changes made, just show success message and exit edit mode
-        setFlashMessage({
-          type: "success",
-          message: "No changes were made to the journal",
-          isVisible: true,
-        });
-        setIsEditing(false);
-        return;
-      }
-
-      // Text has changed, proceed with API call
-      const response = await fetch(
-        `/api/journals/${userId}/details/${journalId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ entryText: editedText }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to update journal");
-      }
-
-      const updatedJournal = await response.json();
-      setJournal(updatedJournal);
-      setAnimationKey((prev) => prev + 1);
-
-      // Show success message
-      setFlashMessage({
-        type: "success",
-        message: "Journal updated successfully!",
-        isVisible: true,
-      });
-    } catch (err) {
-      console.error("Error updating journal:", err);
-      // Show error message
-      setFlashMessage({
-        type: "error",
-        message: "Failed to update journal. Please try again.",
-        isVisible: true,
-      });
-    } finally {
-      setIsSaving(false);
-      setIsEditing(false);
-    }
-  };
-
-  const handleCloseFlash = () => {
-    setFlashMessage((prev) => ({ ...prev, isVisible: false }));
-  };
-
-  // Check for flash message in sessionStorage on component mount
   useEffect(() => {
     const storedMessage = sessionStorage.getItem("flashMessage");
     if (storedMessage) {
@@ -237,13 +241,8 @@ const JournalDetail = ({ params }: JournalDetailProps) => {
     }
   }, []);
 
-  if (isLoading) {
-    return <LoadingResponse />;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
+  if (isLoading) return <LoadingResponse />;
+  if (error) return <div>{error}</div>;
 
   return (
     <section className="flex flex-col w-full pb-6">
