@@ -2,8 +2,10 @@
 import React, { useState, useEffect } from "react";
 
 // Next
+import Link from "next/link";
 
 // Component
+import PersistentFlashMessage from "@/components/utilities/PersistentFlashMessage";
 import MainHeader from "@/components/header/MainHeader";
 import ZoopText from "@/components/utilities/ZoopText";
 import Sidebar from "@/components/header/Sidebar";
@@ -24,6 +26,18 @@ import { AnimatePresence } from "framer-motion";
 import Lenis from "lenis";
 
 const Home = () => {
+  const [isMenuActive, setIsMenuActive] = useState(false);
+  const [showPostTestMessage, setShowPostTestMessage] = useState(false);
+
+  useEffect(() => {
+    // Delay showing the message by 3 seconds
+    const timer = setTimeout(() => {
+      setShowPostTestMessage(true);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   useEffect(() => {
     const lenis = new Lenis();
     function raf(time: any) {
@@ -33,10 +47,21 @@ const Home = () => {
     requestAnimationFrame(raf);
   }, []);
 
-  const [isMenuActive, setIsMenuActive] = useState(false);
-
   return (
     <div className="absolute w-full h-[100dvh]">
+      <PersistentFlashMessage
+        isVisible={showPostTestMessage}
+        onClose={() => setShowPostTestMessage(false)}
+      >
+        After using the application for 7 days, you can access the Post-Test
+        Questionare{" "}
+        <Link
+          className="underline"
+          href="https://docs.google.com/forms/d/10lkmj87IS0ZptU6XGtWjGo4YUyQj6u-2Ysi0u5PWgs0/edit"
+        >
+          here
+        </Link>
+      </PersistentFlashMessage>
       <StickySidebar />
       <MainHeader isActive={isMenuActive} onMenuClick={setIsMenuActive} />
       <AnimatePresence mode="wait">
