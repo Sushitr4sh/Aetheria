@@ -1,9 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getProviders, signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 
-export default function SignIn() {
+const SignInContent = () => {
   const [providers, setProviders] = useState<any>(null);
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
@@ -35,5 +35,13 @@ export default function SignIn() {
           ))}
       </div>
     </div>
+  );
+};
+
+export default function SignIn() {
+  return (
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <SignInContent />
+    </React.Suspense>
   );
 }
