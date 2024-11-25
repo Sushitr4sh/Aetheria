@@ -51,7 +51,7 @@ const NotFound = () => {
       </AnimatePresence>
       <section className="flex flex-col w-full h-[100dvh] top-0 left-0 -z-50">
         <article className="px-6 mt-28">
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <ZoopText delay={0.25}>404 Error.</ZoopText>
             <ZoopText delay={0.5}>Upsss!</ZoopText>
             <ClipPathImage backgroundImage={Gif404} gif delay={1.75} />
@@ -60,15 +60,17 @@ const NotFound = () => {
               <ZoopText delay={1.1}>track.</ZoopText>
             </span>
           </div>
-          <div className="hidden">
-            <ZoopText delay={0.25}>Start your journey &</ZoopText>
-            <div className="flex gap-x-4">
-              <ZoopText delay={0.5}>discover</ZoopText>
-              <ClipPathImage backgroundImage={Hero01Img} delay={1.5} />
-              <span className="text-gray-400">
-                <ZoopText delay={0.5}>peace</ZoopText>
+          <div className="hidden lg:block">
+            <ZoopText delay={0.25}>404 Error. Upsss!</ZoopText>
+            <div className="flex">
+              <ClipPathImage backgroundImage={Gif404} gif delay={1.75} />
+              <span className="text-[#b3b3b3] ml-[2rem]">
+                <ZoopText delay={0.5}>Get Back on</ZoopText>
               </span>
             </div>
+            <span className="text-[#b3b3b3]">
+              <ZoopText delay={0.85}>track.</ZoopText>
+            </span>
           </div>
         </article>
         <motion.div
